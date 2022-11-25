@@ -42,7 +42,7 @@ to "icp" or "pcpp". Defaults to 1.}
 as an attribute. Default is TRUE.}
 }
 \value{
-A point process on a linear network with class
+A point process on a linear network with class lpp.
 }
 \description{
 Simulates a Cox process (a log Gaussian Cox process, interrupted
@@ -55,40 +55,21 @@ network and using the multivariate normal distribution on the grid.
 # log Gaussian Cox process with exponential covariance function and geodesic metric
 pos = makepos(spatstat.data::simplenet,50)
 covfunc = covfunctypes("expcov",1)
-X = simCPLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=10)
-plot(attr(X,"Lambda"))
-plot(X,add=TRUE)
+X = simCPLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=5)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
-plot(as.ppp(X),add=TRUE)
+plot(X,add=TRUE)
 
-
-# Gaussian process with exponential covariance function and resistance metric
-pos = makepos(spatstat.data::simplenet,50)
-covfunc = covfunctypes("expcov",1)
-X = simGausLNDisc(pos,covfunc,mu=0,sigma=1,metric="R")
-plot(X)
-
-# Gaussian process with covariance function with gamma Bernstein CDF
+# Interrupted Cox process with gamma Bernstein CDF and resistance metric
 pos = makepos(spatstat.data::simplenet,50)
 covfunc = covfunctypes("gamma",c(1,1))
-X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
-plot(X)
+X = simCPLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=5)
+plot(attr(X,"Lambda"),style="width",col="grey",main="")
+plot(X,add=TRUE)
 
-# Simulation of random intensity for log Gaussian Cox process
+# Permanental Cox point process with inverse gamma Bernstein CDF and resistance metric
 pos = makepos(spatstat.data::simplenet,50)
-covfunc = covfunctypes("expcov",1)
-X = simGausLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=10)
-plot(X)
-
-# Simulation of random intensity for interrupted Cox process
-pos = makepos(spatstat.data::simplenet,50)
-covfunc = covfunctypes("expcov",1)
-X = simGausLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=10)
-plot(X)
-
-# Simulation of random intensity for permanental Cox point process
-pos = makepos(spatstat.data::simplenet,50)
-covfunc = covfunctypes("expcov",1)
-X = simGausLNDisc(pos,covfunc,transform="pcpp",h=1,rho=10)
-plot(X)
+covfunc = covfunctypes("invgamma",c(1,1))
+X = simCPLNDisc(pos,covfunc,transform="pcpp",h=1,rho=5)
+plot(attr(X,"Lambda"),style="width",col="grey",main="")
+plot(X,add=TRUE)
 }
