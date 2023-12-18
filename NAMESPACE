@@ -3,6 +3,7 @@
 export(CalcLaplacianMatrix)
 export(covfunctypes)
 export(distR)
+export(findendpoints)
 export(makepos)
 export(paircorfunc)
 export(pairdistR)

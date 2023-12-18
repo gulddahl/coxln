@@ -66,7 +66,7 @@
 #' @export
 
 simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=1,rho=1){
-  posmark = pos
+  #posmark = pos
   if (metric=="G") covmat = covfunc(pairdist.lpp(pos))
   else if (metric=="R") covmat = covfunc(pairdistR(pos))
   else stop("Unknown metric")
@@ -75,8 +75,8 @@ simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=
   else if (transform=="lgcp") Y = rho*exp(sigma*as.vector(rmvnorm(1,sigma=covmat))-sigma^2/2)
   else if (transform=="icp"|transform=="pcpp") {
     Y = rep(0,npoints(pos))
-    for (i in 1:h) Y = Y + (sigma*as.vector(rmvnorm(1,sigma=covmat)))^2
-    if (transform=="icp") Y = rho*exp(-Y)*(1+2*sigma^2)^(h/2)
+    for (i in 1:h) Y = Y + (as.vector(rmvnorm(1,sigma=covmat)))^2
+    if (transform=="icp") Y = rho*exp(-sigma^2*Y)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y = rho*Y/h
   }
   #marks(pos) = Y
