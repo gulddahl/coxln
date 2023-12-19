@@ -10,6 +10,8 @@
 #' @importFrom spatstat.geom setmarks
 #' @importFrom spatstat.geom nnfun
 #' @importFrom spatstat.geom as.ppp
+#' @importFrom spatstat.explore fv
+#' @importFrom spatstat.explore plot.fv
 #' @importFrom mvtnorm rmvnorm
 ## usethis namespace: end
 NULL
