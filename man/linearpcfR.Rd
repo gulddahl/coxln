@@ -30,10 +30,4 @@ X = spatstat.data::spiders
 r = seq(0,250,length.out=50)
 pcf = linearpcfR(X,r)
 plot(pcf)
-
-# Estimate pcf for dendrite data
-X = spatstat.data::dendrite
-r = seq(0,5,length.out=50)
-pcf = linearpcfR(X,r)
-plot(pcf)
 }
