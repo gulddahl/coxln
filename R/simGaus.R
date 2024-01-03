@@ -66,7 +66,6 @@
 #' @export
 
 simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=1,rho=1){
-  #posmark = pos
   if (metric=="G") covmat = covfunc(pairdist.lpp(pos))
   else if (metric=="R") covmat = covfunc(pairdistR(pos))
   else stop("Unknown metric")
@@ -79,8 +78,191 @@ simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=
     if (transform=="icp") Y = rho*exp(-sigma^2*Y)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y = rho*Y/h
   }
-  #marks(pos) = Y
   pos = spatstat.geom::setmarks(pos,Y)
   f = nnfun.lpp(pos,value="mark")
   return(f)
 }
+
+
+#' Check whether L is a connected tree
+
+#' @description
+#' Checks whether L is a connected tree.
+
+#' @param L A linear network
+#' @returns Returns TRUE is L is both connected and a tree; returns FALSE otherwise.
+
+#' @examples
+#' # Check whether simplenet from spatstat is a connected tree
+#' is.tree(spatstat.data::simplenet)
+#'
+#' # Check whether the network used in the dendrite data is a connected tree
+#' is.tree(as.linnet(spatstat.data::dendrite))
+
+#' @export
+
+is.tree = function(L) return(is.connected.linnet(L)&npoints(L$vertices)==L$lines$n+1)
+
+
+#' Make order on vertices
+
+#' @description
+#' Makes an order of the vertices in a linear network (defined by the smallest
+#' number of line segments from the vertex internally numbered as 1).
+
+#' @param L A linear network
+#' @returns Returns a vector of integers representing the order of each vertex.
+
+#' @examples
+#' # Make order on the vertices from simplenet
+#' makeorderV(spatstat.data::simplenet)
+#'
+#' # Make order on the vertices in the network used in the dendrite data
+#' makeorderV(as.linnet(spatstat.data::dendrite))
+
+#' @export
+
+makeorderV = function(L){
+  order = Lnorder1 = c(1,rep(0,npoints(L$vertices)-1))
+  i = 1
+  repeat{
+    i = i + 1
+    Lnorder1 = L$m%*%Lnorder1
+    order[as.vector(Lnorder1>0&order==0)] = i
+    if (sum(order==0)==0) break
+  }
+  return(order)
+}
+
+
+#' Make order line segments
+
+#' @description
+#' Makes an order of the line segments in a linear network by giving the same order
+#' to a line segments as the lowest order of the vertices it connects to.
+
+#' @param L A linear network
+#' @param orderV A vector of orders on the vertices; created by the functino makeorderV by
+#' default.
+#' @returns Returns a vector of integers representing the order of each line segment.
+
+#' @examples
+#' # Make order on the vertices from simplenet
+#' makeorderL(spatstat.data::simplenet)
+#'
+#' # Make order on the vertices in the network used in the dendrite data
+#' makeorderL(as.linnet(spatstat.data::dendrite))
+
+#' @export
+
+makeorderL = function(L,orderV=makeorderV(L)){
+  orderLmat = cbind(orderV[L$from],orderV[L$to])
+  apply(orderLmat,1,min)
+}
+
+
+#' Make simulations for simGausExpLNRoot
+
+#' @description This is an internal function for making the simulations
+#' used in the function simGausExpLNRoot.
+
+simY = function(pos,beta,mu,sigma,orderL,orderV){
+  L = as.linnet(pos)
+  l = lengths_psp(L$lines)
+  Y = rep(0,npoints(pos))
+  Yvertices = c(rnorm(1),rep(0,npoints(L$vertices)-1))
+  for (i in 1:max(orderL)){
+    for (j in (1:length(orderL))[orderL==i]){
+      if (orderV[L$from[j]]<orderV[L$to[j]]){
+        posj = pos$data$tp[pos$data$seg==j]
+        simj = c(Yvertices[L$from[j]],rep(0,length(posj)-1))
+        if (length(posj)<2) stop("pos should contain duplicated points at vertices (i.e. use makepos function with duplicate=TRUE)")
+        for (k in 2:length(posj)){
+          simj[k] = rnorm(1,exp(-l[j]*(posj[k]-posj[k-1])*beta)*simj[k-1],
+                          sqrt(1-exp(-2*l[j]*(posj[k]-posj[k-1])*beta)))
+        }
+        Yvertices[L$to[j]] = simj[length(posj)]
+        Y[pos$data$seg==j]=simj
+      } else {
+        posj = pos$data$tp[pos$data$seg==j]
+        simj = c(rep(0,length(posj)-1),Yvertices[L$to[j]])
+        for (k in (length(posj)-1):1){
+          simj[k] = rnorm(1,exp(-l[j]*(posj[k+1]-posj[k])*beta)*simj[k+1],
+                          sqrt(1-exp(-2*l[j]*(posj[k+1]-posj[k])*beta)))
+        }
+        Yvertices[L$from[j]] = simj[1]
+        Y[pos$data$seg==j]=simj
+      }
+    }
+  }
+  Y = sigma*Y + mu
+}
+
+
+#' Simulate Gaussian Random Field with exponential covariance function on linear network
+
+#' @description
+#' Simulates a Gaussian Random Field (GRF) with an exponential covariance function
+#' defined on a linear network using sequential simulation on the line segments
+#' one at a time starting from the root. Also includes the possibility of
+#' transforming the simulation for use in various cox point processes.
+
+#' @param pos A point pattern on L defining the discretisation of the network.
+#' @param beta The parameter used in the exponential covariance function.
+#' @param mu The mean of the GRF. Only used if transform=="none".
+#' @param sigma The standard deviation used in the GRF. Ignored if transform=="pcpp".
+#' @param transform The transform applied to the GRF. "none" gives an untransformed GRF,
+#' "lgcp" gives a log GRF (used in a log Gaussian Cox process), "icp" gives the field
+#' used in an interupted Cox process, and "pcpp" gives the field used in a permanental
+#' Cox point process.
+#' @param h The number of independent GRFs used in "icp" or "pcpp"; ignored if transform
+#' is "none" and "lgcp".
+#' @param rho The mean number of points per unit length of network when GRF is used
+#' for Cox point processes; ignored if transform=="none".
+#' @param orderV The order on the vertices used for defining the order of the
+#' line segments used in the simulation; default is the order given by the function makeorderV.
+#' Warning: Using other orders may result in a simulation with the wrong distribution.
+#' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
+
+#' @examples
+#' # Gaussian process on network from dendrite data
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simGausExpLNRoot(pos,beta=0.01,mu=0,sigma=1,transform="none")
+#' plot(X)
+#'
+#' # simulation of intensity for LGCP
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=1)
+#' plot(X)
+#'
+#' # simulation of intensity for ICP
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="icp",h=1,rho=1)
+#' plot(X)
+#'
+#' # simulation of intensity for PCPP
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simGausExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=1)
+#' plot(X)
+
+#' @export
+
+simGausExpLNRoot = function(pos,beta,mu=0,sigma=1,transform="none",h=1,rho=1,orderV=makeorderV(as.linnet(pos))){
+  L = as.linnet(pos)
+  if(is.tree(L)==FALSE) stop("The linear network is not a connected tree.")
+  orderL = makeorderL(L,orderV)
+  if (transform=="none") Y = simY(pos,beta,mu,sigma,orderL,orderV)
+  else if (transform=="lgcp") Y = rho*exp(simY(pos,beta,mu=-sigma^2/2,sigma,orderL,orderV))
+  else if (transform=="icp"|transform=="pcpp") {
+    Y = rep(0,npoints(pos))
+    for (i in 1:h) Y = Y + simY(pos,beta,0,1,orderL,orderV)^2
+    if (transform=="icp") Y = rho*exp(-sigma^2*Y)*(1+2*sigma^2)^(h/2)
+    if (transform=="pcpp") Y = rho*Y/h
+  } else {
+    stop("Invalid transform: use none, lgcp, icp or pcpp.")
+  }
+  pos = spatstat.geom::setmarks(pos,Y)
+  f = nnfun(pos,value="mark")
+  return(f)
+}
+
