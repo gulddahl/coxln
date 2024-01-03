@@ -13,7 +13,8 @@ Imports:
     spatstat.data,
     spatstat.geom,
     spatstat.linnet,
-    mvtnorm
+    mvtnorm,
+    GeneralizedHyperbolic
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 

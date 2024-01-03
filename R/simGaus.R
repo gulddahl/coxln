@@ -266,3 +266,108 @@ simGausExpLNRoot = function(pos,beta,mu=0,sigma=1,transform="none",h=1,rho=1,ord
   return(f)
 }
 
+
+
+
+
+#' Simulate Gaussian Random Field with arbitrary covariance function on tree-shaped linear network
+
+#' @description
+#' Simulates a Gaussian random Field with arbitrary covariance function on a
+#' tree-shaped linear network using average of simulations with
+#' exponential covariance functions with parameters drawn from
+#' a given Bernstein density.
+
+#' @details
+#' This function simulates a Gaussian random Field with
+#' arbitrary covariance function on a
+#' tree-shaped linear network using average of simulations with
+#' exponential covariance functions with parameters drawn from
+#' a given Bernstein density.
+#' Each of the simulations with exponential
+#' covariance function are simulated with a sequential simulation
+#' algorithm simulating one line segment at a time starting at the root
+#' of the tree. Note that the algorithm is only approximate, but a central limit
+#' theorem ensures it converges to the right distribution, when the number of
+#' simulations from the Bernstein density increases.
+
+#' @param pos A point pattern on L defining the discretisation of the network.
+#' @param simalgo A vector of values used as parameters in the underlying
+#' exponential covariance functions; can be created conveniently by the function
+#' simalgotypes to match a particular covariance function.
+#' @param mu The mean of the GRF. Only used if transform=="none".
+#' @param sigma The standard deviation used in the GRF. Ignored if transform=="pcpp".
+#' @param transform The transform applied to the GRF. "none" gives an untransformed GRF,
+#' "lgcp" gives a log GRF (used in a log Gaussian Cox process), "icp" gives the field
+#' used in an interupted Cox process, and "pcpp" gives the field used in a permanental
+#' Cox point process.
+#' @param h The number of independent GRFs used in "icp" or "pcpp"; ignored if transform
+#' is "none" and "lgcp".
+#' @param rho The mean number of points per unit length of network when GRF is used
+#' for Cox point processes; ignored if transform=="none".
+#' @param orderV The order on the vertices used for defining the order of the
+#' line segments used in the simulation; default is the order given by the function makeorderV.
+#' Warning: Using other orders may result in a simulation with the wrong distribution.
+#' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
+
+#' @examples
+#' # Gaussian process on network with gamma Bernstein density
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+#' X = simGausLNRoot(pos,simalgo,mu=0,sigma=1,transform="none")
+#' plot(X)
+#'
+#' # simulation of intensity for LGCP with gamma Bernstein density
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+#' X = simGausLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=1)
+#' plot(X)
+#'
+#' # simulation of intensity for ICP with inverse gamma Bernstein density
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
+#' X = simGausLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=1)
+#' plot(X)
+#'
+#' # simulation of intensity for PCPP with generalized inverse Gaussian Bernstein density
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
+#' X = simGausLNRoot(pos,simalgo,transform="pcpp",h=1,rho=1)
+#' plot(X)
+
+#' @export
+
+simGausLNRoot = function(pos,simalgo,mu=0,sigma=1,transform="none",h=1,rho=1,orderV=makeorderV(as.linnet(pos))){
+  L = as.linnet(pos)
+  if(is.tree(L)==FALSE) stop("The linear network is not a tree.")
+  orderL = makeorderL(L,orderV)
+  beta = simalgo
+  if (transform=="none"|transform=="lgcp"){
+    Ysum = rep(0,npoints(pos))
+    for (i in 1:length(beta)){
+      Y = simY(pos,beta[i],mu=0,sigma=1,orderL,orderV)
+      Ysum = Y + Ysum
+    }
+    if (transform=="none") Y2 = sigma*1/sqrt(length(beta))*Ysum+mu
+    if (transform=="lgcp") Y2 = rho*exp(sigma*1/sqrt(length(beta))*Ysum-sigma^2/2)
+  }
+  if (transform=="icp"|transform=="pcpp"){
+    Ysum2 = rep(0,npoints(pos))
+    for (j in 1:h){
+      Ysum = rep(0,npoints(pos))
+      for (i in 1:length(beta)){
+        if (transform=="icp") Y = simY(pos,beta[i],mu=0,sigma=sigma,orderL,orderV)
+        if (transform=="pcpp") Y = simY(pos,beta[i],mu=0,sigma=1,orderL,orderV)
+        Ysum = Y + Ysum
+      }
+      Ysum2 = Ysum2 + (1/sqrt(length(beta))*Ysum)^2
+    }
+    if (transform=="icp") Y2 = rho*exp(-Ysum2)*(1+2*sigma^2)^(h/2)
+    if (transform=="pcpp") Y2 = rho*Ysum2/h
+  }
+  #marks(pos) = Y2
+  pos = spatstat.geom::setmarks(pos,Y2)
+  f = nnfun(pos,value="mark")
+  return(f)
+}
+

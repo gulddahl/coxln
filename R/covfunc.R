@@ -129,3 +129,52 @@ paircorfunc = function(covtype,transform){
   if (transform=="pcpp") g = function(par,r) 1+covfunc(par[-1],r)^2/(par[1]/2)
   return(g)
 }
+
+
+#' Simulate a Bernstein density
+
+#' @description
+#' Makes a simulation from the Bernstein density corresponding to
+#' a covariance function.
+
+#' @details
+#' This function makes a number of simulations from the Bernstein density
+#' corresponding to a covariance function (see the function covfunc for details
+#' on the corresponding covariance functions). This vector can be used in the
+#' function simGausLNRoot for making approximate simulations of a Gaussian random
+#' field with the corresponding covariance function. The currently implemented
+#' types are:
+#' * Gamma Bernstein density: gamma distribution with shape parameter tau and rate
+#' parameter phi. Set type="gamma" and param = c(tau,phi).
+#' * Inverse Gamma Bernstein density: Inverse gamma distribution with shape
+#' parameter tau and scale parameter phi. Set type="invgamma" and param = c(tau,phi).
+#' * Generalized inverse Gaussian Bernstein density: Generalized inverse Gaussian
+#' distribution with with parameters (chi,psi,lambda). Set type="gig" and
+#' param = c(chi,psi,lambda).
+
+#' @param param Parameter vector used in the Bernstein distribution.
+#' @param type The type of Bernstein distribution. Can be "gamma",
+#' "invgamma", and "gig". See details.
+#' @param nsim The number of simulations.
+#' @returns A vector of length nsim with the simulated values.
+
+#' @examples
+#' # simulation of gamma Bernstein distribution
+#' simalgotypes(param=c(1,1),type="gamma",nsim=10)
+#'
+#' # simulation of inverse gamma Bernstein distribution
+#' simalgotypes(param=c(1,1),type="invgamma",nsim=10)
+#'
+#' # simulation of generalized inverse Gaussian Bernstein distribution
+#' simalgotypes(param=c(1,1,1),type="gig",nsim=10)
+#'
+
+#' @export
+
+simalgotypes = function(param,type,nsim){
+  if (type=="gamma") simalgo = rgamma(nsim,param[1],rate=param[2])
+  else if (type=="invgamma") simalgo = 1/rgamma(nsim,param[1],rate=param[2])
+  else if (type=="gig") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
+  else stop("unknown type of covariance function")
+  return(simalgo)
+}

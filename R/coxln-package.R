@@ -13,5 +13,6 @@
 #' @importFrom spatstat.explore fv
 #' @importFrom spatstat.explore plot.fv
 #' @importFrom mvtnorm rmvnorm
+#' @importFrom GeneralizedHyperbolic rgig
 ## usethis namespace: end
 NULL
