@@ -1,7 +1,7 @@
 Package: coxln
 Type: Package
 Title: Cox processes on Linear Networks
-Version: 0.0.0.9002
+Version: 0.0.0.9003
 Authors@R: person("Rasmussen", "Jakob G.", email = "jgr@math.aau.dk", role = c("aut", "cre"))
 Description: Simulation algorithms for Cox processes driven by
     transformed Gaussian processes on linear networks, and other tools
