@@ -199,11 +199,11 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
 }
 
 
-#' Simulate Gaussian Random Field with exponential covariance function on linear network
+#' Simulate Gaussian Random Field with exponential covariance function on tree-shaped linear network
 
 #' @description
 #' Simulates a Gaussian Random Field (GRF) with an exponential covariance function
-#' defined on a linear network using sequential simulation on the line segments
+#' defined on a tree-shaped linear network using sequential simulation on the line segments
 #' one at a time starting from the root. Also includes the possibility of
 #' transforming the simulation for use in various cox point processes.
 

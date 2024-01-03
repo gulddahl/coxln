@@ -57,3 +57,60 @@ simCPLNDisc = function(pos,covfunc,sigma=1,metric="G",transform="lgcp",h=1,rho=1
   if (savelambda==TRUE) attr(X,"Lambda") = GP
   return(X)
 }
+
+
+#' Simulate Cox process on tree-shaped linear network
+
+#' @description
+#' Simulates a Cox process (a log Gaussian Cox process, interrupted
+#' Cox process or permanental Cox point process) on a tree-shaped linear
+#' network using sequential simulation on the line segments
+#' one at a time starting from the root of the tree. The underlying Gaussian
+#' random field is equipped with an exponential covariance function.
+
+#' @param pos A point pattern on the linear network representing the grid on which the underlying
+#' Gaussian process is simulated. This point pattern can be made with the function makepos.
+#' @param beta The parameter used in the exponential covariance function.
+#' @param sigma The standard deviation of the Gaussian process. Defaults to 1 and only used
+#' if transform equal "lgcp" or "icp".
+#' @param transform Type of Cox process simulated. Possible values are "lgcp", "icp" or "pcpp"
+#' corresponding to a log Gaussian Cox process, interrupted Cox process or
+#' permanental Cox point process.
+#' @param h The number of underlying Gaussian processes simulated. Only used if transform is equal
+#' to "icp" or "pcpp". Defaults to 1.
+#' @param rho The intensity of the Cox process.
+#' @param savelambda If TRUE the simulation of the underlying Gaussian process is saved
+#' as an attribute. Default is TRUE.
+#' @param orderV The order on the vertices used for defining the order of the
+#' line segments used in the simulation; default is the order given by the function makeorderV.
+#' Warning: Using other orders may result in a simulation with the wrong distribution.
+#' @returns A point process on a linear network with class lpp.
+
+#' @examples
+#' # log Gaussian Cox process
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simCPExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
+#' plot(attr(X,"Lambda"),style="width",col="grey",main="")
+#' points(X,cex=0.5)
+#'
+#' # Interrupted Cox process
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simCPExpLNRoot(pos,beta=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
+#' plot(attr(X,"Lambda"),style="width",col="grey",main="")
+#' points(X,cex=0.5)
+#'
+#' # Permanental Cox point process
+#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' X = simCPExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
+#' plot(attr(X,"Lambda"),style="width",col="grey",main="")
+#' points(X,cex=0.5)
+
+#' @export
+
+simCPExpLNRoot = function(pos,beta,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeorderV(as.linnet(pos)),savelambda=TRUE){
+  if (transform!="lgcp"&transform!="icp"&transform!="pcpp") stop("transform must be lgcp, icp or pcpp")
+  GP = simGausExpLNRoot(pos,beta,mu=0,sigma,transform,h,rho,orderV)
+  X = rpoislpp(GP)
+  if (savelambda==TRUE) attr(X,"Lambda") = GP
+  return(X)
+}

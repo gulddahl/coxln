@@ -2,7 +2,7 @@
 % Please edit documentation in R/simGaus.R
 \name{simGausExpLNRoot}
 \alias{simGausExpLNRoot}
-\title{Simulate Gaussian Random Field with exponential covariance function on linear network}
+\title{Simulate Gaussian Random Field with exponential covariance function on tree-shaped linear network}
 \usage{
 simGausExpLNRoot(
   pos,
@@ -44,7 +44,7 @@ A simulation of a (transformed) Gaussian process with class linfun from spatstat
 }
 \description{
 Simulates a Gaussian Random Field (GRF) with an exponential covariance function
-defined on a linear network using sequential simulation on the line segments
+defined on a tree-shaped linear network using sequential simulation on the line segments
 one at a time starting from the root. Also includes the possibility of
 transforming the simulation for use in various cox point processes.
 }
