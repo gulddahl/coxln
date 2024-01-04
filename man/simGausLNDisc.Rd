@@ -88,3 +88,10 @@ covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,transform="pcpp",h=1,rho=10)
 plot(X)
 }
+\seealso{
+\link{simCPLNDisc} for simulation of Cox processes using GRFs,
+\link{simGausExpLNRoot} or \link{simGausLNDisc} for fast simulation of GRFs
+with exponential or arbitrary covariance functions on tree-shaped
+linear networks, \link{covfunctypes} for covariance functions, \link{paircorfunc}
+for pair correlation functions
+}

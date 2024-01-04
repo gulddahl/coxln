@@ -92,3 +92,11 @@ X = simCPLNRoot(pos,simalgo,transform="pcpp",h=1,rho=0.1)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 }
+\seealso{
+\link{simGausLNRoot} for simulation of the underlying GRF,
+\link{simCPExpLNRoot} for simulation of Cox processes with exponential
+covariance functions, \link{simCPLNDisc} for simulation of Cox processes
+on arbitrary linear networks, \link{simalgotypes} for simulation of Bernstein
+distributions, \link{covfunctypes} for covariance functions, \link{paircorfunc}
+for pair correlation functions
+}

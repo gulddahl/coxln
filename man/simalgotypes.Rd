@@ -49,3 +49,9 @@ simalgotypes(param=c(1,1),type="invgamma",nsim=10)
 simalgotypes(param=c(1,1,1),type="gig",nsim=10)
 
 }
+\seealso{
+\link{covfunctypes} for covariance functions corresponding to
+Bernstein distributions, \link{simGausExpLNRoot} or
+\link{simGausLNRoot} for simulation of GRFs on tree-shaped linear networks
+with a given Bernstein distribution
+}

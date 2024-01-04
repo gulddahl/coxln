@@ -26,6 +26,12 @@
 #' @param rho The intensity parameter used if transform is equal to "lgcp", "icp", or "pcpp".
 #' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
 
+#' @seealso [simCPLNDisc] for simulation of Cox processes using GRFs,
+#' [simGausExpLNRoot] or [simGausLNDisc] for fast simulation of GRFs
+#' with exponential or arbitrary covariance functions on tree-shaped
+#' linear networks, [covfunctypes] for covariance functions, [paircorfunc]
+#' for pair correlation functions
+
 #' @examples
 #' # Gaussian process with exponential covariance function and geodesic metric
 #' pos = makepos(spatstat.data::simplenet,50)
@@ -92,6 +98,10 @@ simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=
 #' @param L A linear network
 #' @returns Returns TRUE is L is both connected and a tree; returns FALSE otherwise.
 
+#' @seealso [simCPLNRoot] or [simCPExpLNRoot] for simulation of Cox processes
+#' specifically on trees, [simGausLNRoot] or [simGausExpLNRoot] for simulation of
+#' Gaussian Random Fields specifically on trees
+
 #' @examples
 #' # Check whether simplenet from spatstat is a connected tree
 #' is.tree(spatstat.data::simplenet)
@@ -112,6 +122,10 @@ is.tree = function(L) return(is.connected.linnet(L)&npoints(L$vertices)==L$lines
 
 #' @param L A linear network
 #' @returns Returns a vector of integers representing the order of each vertex.
+
+#' @seealso [makeorderL] for orders on line segments, [simGausExpLNRoot] or
+#' [simGausLNRoot] for simulation of GRFs using orders, [simCPExpLNRoot] or
+#' [simCPLNRoot] for simulation of Cox processes using orders
 
 #' @examples
 #' # Make order on the vertices from simplenet
@@ -135,7 +149,7 @@ makeorderV = function(L){
 }
 
 
-#' Make order line segments
+#' Make order on line segments
 
 #' @description
 #' Makes an order of the line segments in a linear network by giving the same order
@@ -145,6 +159,10 @@ makeorderV = function(L){
 #' @param orderV A vector of orders on the vertices; created by the functino makeorderV by
 #' default.
 #' @returns Returns a vector of integers representing the order of each line segment.
+
+#' @seealso [makeorderV] for orders on vertices, [simGausExpLNRoot] or
+#' [simGausLNRoot] for simulation of GRFs using orders, [simCPExpLNRoot] or
+#' [simCPLNRoot] for simulation of Cox processes using orders
 
 #' @examples
 #' # Make order on the vertices from simplenet
@@ -224,6 +242,11 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
 #' Warning: Using other orders may result in a simulation with the wrong distribution.
 #' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
 
+#' @seealso [simCPExpLNRoot] for simulation of Cox processes using GRFs,
+#' [simGausLNRoot] for simulation of GRFs with arbitrary
+#' covariance functions, [simGausLNDisc] for simulation of GRFs
+#' on arbitrary linear networks
+
 #' @examples
 #' # Gaussian process on network from dendrite data
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
@@ -267,9 +290,6 @@ simGausExpLNRoot = function(pos,beta,mu=0,sigma=1,transform="none",h=1,rho=1,ord
 }
 
 
-
-
-
 #' Simulate Gaussian Random Field with arbitrary covariance function on tree-shaped linear network
 
 #' @description
@@ -309,6 +329,13 @@ simGausExpLNRoot = function(pos,beta,mu=0,sigma=1,transform="none",h=1,rho=1,ord
 #' line segments used in the simulation; default is the order given by the function makeorderV.
 #' Warning: Using other orders may result in a simulation with the wrong distribution.
 #' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
+
+#' @seealso [simCPLNRoot] for simulation of Cox processes using GRFs,
+#' [simGausExpLNRoot] for simulation of GRFs with exponential
+#' covariance functions, [simGausLNDisc] for simulation of GRFs
+#' on arbitrary linear networks, [simalgotypes] for simulation of Bernstein
+#' distributions, [covfunctypes] for covariance functions, [paircorfunc]
+#' for pair correlation functions
 
 #' @examples
 #' # Gaussian process on network with gamma Bernstein density

@@ -59,3 +59,8 @@ pcf = paircorfunc("invgamma","pcpp")
 parameters = c(h=1,tau=1,phi=1)
 curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 }
+\seealso{
+\link{covfunctypes} for covariance functions, \link{simGausLNDisc}
+for simulation of GRFs on linear networks
+with a given covariance function
+}

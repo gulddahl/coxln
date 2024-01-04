@@ -67,3 +67,9 @@ curve(c0(x),from=0,to=5)
 c0 = covfunctypes("gig",par=c(1,1,1))  # (chi,psi,lambda) = (1,1,1)
 curve(c0(x),from=0,to=5)
 }
+\seealso{
+\link{paircorfunc} for pair correlation functions, \link{simalgotypes}
+for simulation of Bernstein distributions corresponding to covariance
+functions, \link{simGausLNDisc} for simulation of GRFs on linear networks
+with a given covariance function
+}

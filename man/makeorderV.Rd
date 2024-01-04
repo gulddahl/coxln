@@ -23,3 +23,8 @@ makeorderV(spatstat.data::simplenet)
 # Make order on the vertices in the network used in the dendrite data
 makeorderV(as.linnet(spatstat.data::dendrite))
 }
+\seealso{
+\link{makeorderL} for orders on line segments, \link{simGausExpLNRoot} or
+\link{simGausLNRoot} for simulation of GRFs using orders, \link{simCPExpLNRoot} or
+\link{simCPLNRoot} for simulation of Cox processes using orders
+}

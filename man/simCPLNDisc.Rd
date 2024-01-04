@@ -73,3 +73,11 @@ X = simCPLNDisc(pos,covfunc,transform="pcpp",h=1,rho=5)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 plot(X,add=TRUE)
 }
+\seealso{
+\link{simGausLNDisc} for simulation of the underlying GRF,
+\link{simExpCPLNRoot} or \link{simCPLNRoot} for fast simulation of Cox
+processes with exponential or arbitrary
+covariance functions on tree-shaped linear networks,
+\link{covfunctypes} for covariance functions, \link{paircorfunc}
+for pair correlation functions
+}

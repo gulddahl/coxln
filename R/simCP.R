@@ -26,6 +26,14 @@
 #' as an attribute. Default is TRUE.
 #' @returns A point process on a linear network with class lpp.
 
+#' @seealso [simGausLNDisc] for simulation of the underlying GRF,
+#' [simExpCPLNRoot] or [simCPLNRoot] for fast simulation of Cox
+#' processes with exponential or arbitrary
+#' covariance functions on tree-shaped linear networks,
+#' [covfunctypes] for covariance functions, [paircorfunc]
+#' for pair correlation functions
+
+
 #' @examples
 #' # log Gaussian Cox process with exponential covariance function and geodesic metric
 #' pos = makepos(spatstat.data::simplenet,50)
@@ -85,6 +93,11 @@ simCPLNDisc = function(pos,covfunc,sigma=1,metric="G",transform="lgcp",h=1,rho=1
 #' line segments used in the simulation; default is the order given by the function makeorderV.
 #' Warning: Using other orders may result in a simulation with the wrong distribution.
 #' @returns A point process on a linear network with class lpp.
+
+#' @seealso [simGausExpLNRoot] for simulation of the underlying GRF,
+#' [simCPLNRoot] for simulation of Cox processes with arbitrary
+#' covariance functions, [simCPLNDisc] for simulation of Cox processes
+#' on arbitrary linear networks
 
 #' @examples
 #' # log Gaussian Cox process
@@ -164,6 +177,13 @@ simCPExpLNRoot = function(pos,beta,sigma=1,transform="lgcp",h=1,rho=1,orderV=mak
 #' line segments used in the simulation; default is the order given by the function makeorderV.
 #' Warning: Using other orders may result in a simulation with the wrong distribution.
 #' @returns A point process on a linear network with class lpp.
+
+#' @seealso [simGausLNRoot] for simulation of the underlying GRF,
+#' [simCPExpLNRoot] for simulation of Cox processes with exponential
+#' covariance functions, [simCPLNDisc] for simulation of Cox processes
+#' on arbitrary linear networks, [simalgotypes] for simulation of Bernstein
+#' distributions, [covfunctypes] for covariance functions, [paircorfunc]
+#' for pair correlation functions
 
 #' @examples
 #' # simulation of LGCP with gamma Bernstein density

@@ -35,6 +35,11 @@
 #' @returns A function of distance r, or if par=NULL, a function of
 #' (par,r) where par is the parameter vector.
 
+#' @seealso [paircorfunc] for pair correlation functions, [simalgotypes]
+#' for simulation of Bernstein distributions corresponding to covariance
+#' functions, [simGausLNDisc] for simulation of GRFs on linear networks
+#' with a given covariance function
+
 #' @examples
 #' # Exponential covariance function with scale parameter 1
 #' c0 = covfunctypes("expcov",1)
@@ -104,6 +109,10 @@ covfunctypes = function(type,par=NULL){
 #' "pcpp" for permanental Cox process.
 #' @returns A function with inputs par and r.
 
+#' @seealso [covfunctypes] for covariance functions, [simGausLNDisc]
+#' for simulation of GRFs on linear networks
+#' with a given covariance function
+
 #' @examples
 #' # pcf for LGCP with exponential covariance function
 #' pcf = paircorfunc("expcov","lgcp")
@@ -157,6 +166,11 @@ paircorfunc = function(covtype,transform){
 #' "invgamma", and "gig". See details.
 #' @param nsim The number of simulations.
 #' @returns A vector of length nsim with the simulated values.
+
+#' @seealso [covfunctypes] for covariance functions corresponding to
+#' Bernstein distributions, [simGausExpLNRoot] or
+#' [simGausLNRoot] for simulation of GRFs on tree-shaped linear networks
+#' with a given Bernstein distribution
 
 #' @examples
 #' # simulation of gamma Bernstein distribution

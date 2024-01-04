@@ -69,3 +69,9 @@ pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
 X = simGausExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=1)
 plot(X)
 }
+\seealso{
+\link{simCPExpLNRoot} for simulation of Cox processes using GRFs,
+\link{simGausLNRoot} for simulation of GRFs with arbitrary
+covariance functions, \link{simGausLNDisc} for simulation of GRFs
+on arbitrary linear networks
+}

@@ -69,3 +69,9 @@ X = simCPExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 }
+\seealso{
+\link{simGausExpLNRoot} for simulation of the underlying GRF,
+\link{simCPLNRoot} for simulation of Cox processes with arbitrary
+covariance functions, \link{simCPLNDisc} for simulation of Cox processes
+on arbitrary linear networks
+}

@@ -22,3 +22,8 @@ is.tree(spatstat.data::simplenet)
 # Check whether the network used in the dendrite data is a connected tree
 is.tree(as.linnet(spatstat.data::dendrite))
 }
+\seealso{
+\link{simCPLNRoot} or \link{simCPExpLNRoot} for simulation of Cox processes
+specifically on trees, \link{simGausLNRoot} or \link{simGausExpLNRoot} for simulation of
+Gaussian Random Fields specifically on trees
+}

@@ -88,3 +88,11 @@ simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
 X = simGausLNRoot(pos,simalgo,transform="pcpp",h=1,rho=1)
 plot(X)
 }
+\seealso{
+\link{simCPLNRoot} for simulation of Cox processes using GRFs,
+\link{simGausExpLNRoot} for simulation of GRFs with exponential
+covariance functions, \link{simGausLNDisc} for simulation of GRFs
+on arbitrary linear networks, \link{simalgotypes} for simulation of Bernstein
+distributions, \link{covfunctypes} for covariance functions, \link{paircorfunc}
+for pair correlation functions
+}

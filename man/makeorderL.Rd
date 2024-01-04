@@ -2,7 +2,7 @@
 % Please edit documentation in R/simGaus.R
 \name{makeorderL}
 \alias{makeorderL}
-\title{Make order line segments}
+\title{Make order on line segments}
 \usage{
 makeorderL(L, orderV = makeorderV(L))
 }
@@ -25,4 +25,9 @@ makeorderL(spatstat.data::simplenet)
 
 # Make order on the vertices in the network used in the dendrite data
 makeorderL(as.linnet(spatstat.data::dendrite))
+}
+\seealso{
+\link{makeorderV} for orders on vertices, \link{simGausExpLNRoot} or
+\link{simGausLNRoot} for simulation of GRFs using orders, \link{simCPExpLNRoot} or
+\link{simCPLNRoot} for simulation of Cox processes using orders
 }
