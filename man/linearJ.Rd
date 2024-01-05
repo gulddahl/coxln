@@ -46,3 +46,7 @@ ppul = 0.5
 J = linearJ(X,r,ppul,metric="G")
 plot(J)
 }
+\seealso{
+\link{linearF}, \link{linearG} and \link{linearpcfR} for other summary statistics,
+\link{minussampling} for minus sampling
+}

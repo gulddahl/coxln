@@ -13,6 +13,10 @@
 #'   point on each vertex.
 #' @returns A point pattern of class lpp from the spatstat package.
 
+#' @seealso [simGausLNRoot], [simGausExpLNRoot], [simGausLNDisc] for
+#' simulation of Gaussian processes on a
+#' grid of points on a linear network
+
 #' @examples
 #' makepos(spatstat.data::simplenet,10)
 

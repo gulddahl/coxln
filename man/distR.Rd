@@ -30,3 +30,8 @@ linear network.
 # Distance between midpoints in segments number 1 and 2
 distR(1,0.5,2,0.5,spatstat.data::simplenet)
 }
+\seealso{
+\link{pairdistR} for calculation of the resistance
+metric on one or two point pattern on a linear network,
+\link{CalcLaplacianMatrix} for calculation of the Laplacian matrix
+}

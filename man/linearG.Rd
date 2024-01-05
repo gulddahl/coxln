@@ -38,3 +38,7 @@ r = seq(0,5,length.out=50)
 G = linearG(X,r,ppul,metric="G")
 plot(G)
 }
+\seealso{
+\link{linearF}, \link{linearJ} and \link{linearpcfR} for other summary statistics,
+\link{minussampling} for minus sampling
+}

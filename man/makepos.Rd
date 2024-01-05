@@ -27,3 +27,8 @@ spaced on each line segment.
 \examples{
 makepos(spatstat.data::simplenet,10)
 }
+\seealso{
+\link{simGausLNRoot}, \link{simGausExpLNRoot}, \link{simGausLNDisc} for
+simulation of Gaussian processes on a
+grid of points on a linear network
+}

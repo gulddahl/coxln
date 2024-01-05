@@ -26,3 +26,7 @@ on the same network giving all the end points in the network.
 ep = findendpoints(spatstat.data::simplenet)
 plot(ep)
 }
+\seealso{
+\link{minussampling} for a minus sampling method using
+the end points
+}

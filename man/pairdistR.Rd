@@ -54,3 +54,8 @@ pairdistR(X,Y)
 X = spatstat.data::spiders
 pairdistR(X,derivative=TRUE)
 }
+\seealso{
+\link{distR} for calculation of the resistance
+metric between two points in a linear network,
+\link{CalcLaplacianMatrix} for calculation of the Laplacian matrix
+}

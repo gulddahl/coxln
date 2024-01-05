@@ -46,3 +46,7 @@ Xm = minussampling(X,r,metric="R")
 plot(X)
 plot(Xm, add=TRUE, cols=3)
 }
+\seealso{
+\link{findendpoints} for finding the end points, \link{linearF}, \link{linearG}
+and \link{linearJ} for estimation of F, G and J functions using minus sampling
+}

@@ -25,3 +25,7 @@ CalcLaplacianMatrix(L)
 L = as.linnet(spatstat.data::dendrite,sparse=FALSE)
 CalcLaplacianMatrix(L)
 }
+\seealso{
+\link{distR} and \link{pairdistR} for calculation of the resistance
+metric using the Laplacian matrix
+}

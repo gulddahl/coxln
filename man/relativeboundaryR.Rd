@@ -51,3 +51,7 @@ rb = relativeboundaryR(point,r)
 plot(point,use.marks=FALSE)
 plot(rb,add=TRUE,cols=2)
 }
+\seealso{
+\link{linearpcfR} for estimation of the pair correlation function
+using the relative boundary for edge correction
+}

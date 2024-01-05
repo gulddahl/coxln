@@ -31,3 +31,6 @@ r = seq(0,250,length.out=50)
 pcf = linearpcfR(X,r)
 plot(pcf)
 }
+\seealso{
+\link{linearF}, \link{linearG} and \link{linearJ} for other summary statistics
+}

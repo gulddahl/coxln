@@ -23,3 +23,7 @@ Calculates the weights used in estimation of the pair correlation
 function for a point pattern observed on a linear network using the
 resistance metric.
 }
+\seealso{
+\link{linearpcfR} for estimation of the pair correlation function
+using the resistance metric
+}

@@ -21,6 +21,9 @@ getdiag = function(x){
 #' @param L A linear network of class linnet from the spatstat package.
 #' @returns A matrix.
 
+#' @seealso [distR] and [pairdistR] for calculation of the resistance
+#' metric using the Laplacian matrix
+
 #' @examples
 #' CalcLaplacianMatrix(spatstat.data::simplenet)
 #'
@@ -54,6 +57,10 @@ CalcLaplacianMatrix = function(L){
 #' @param L A linear network of class linnet from the spatstat package.
 #' @param ILM For internal use.
 #' @returns The resistance distance between u and v.
+
+#' @seealso [pairdistR] for calculation of the resistance
+#' metric on one or two point pattern on a linear network,
+#' [CalcLaplacianMatrix] for calculation of the Laplacian matrix
 
 #' @examples
 #' # Distance between midpoints in segments number 1 and 2
@@ -100,6 +107,10 @@ distR = function(segu,tu,segv,tv,L,ILM = solve(CalcLaplacianMatrix(L))){
 #' @param L Internal use.
 #' @param ILM Internal use.
 #' @returns A matrix with all the distances or derivatives of the distances.
+
+#' @seealso [distR] for calculation of the resistance
+#' metric between two points in a linear network,
+#' [CalcLaplacianMatrix] for calculation of the Laplacian matrix
 
 #' @examples
 #' # All pairwise distances in the spiders dataset

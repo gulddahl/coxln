@@ -12,6 +12,9 @@
 #' @returns A point pattern on a linear network with class lpp
 #' from spatstat.
 
+#' @seealso [minussampling] for a minus sampling method using
+#' the end points
+
 #' @examples
 #' # Find the end points from simplenet from spatstat
 #' ep = findendpoints(spatstat.data::simplenet)
@@ -49,6 +52,9 @@ findendpoints = function(L){
 #' for geodesic distance, or "R" for resistance distance.
 #' @param saveind For internal use.
 #' @return A point pattern on a linear network with class lpp from spatstat.
+
+#' @seealso [findendpoints] for finding the end points, [linearF], [linearG]
+#' and [linearJ] for estimation of F, G and J functions using minus sampling
 
 #' @examples
 #' # Removes points from the dendrite dataset using geodesic metric
@@ -97,6 +103,9 @@ minussampling = function(X,r,metric="G",saveind=FALSE){
 #' for geodesic distance, or "R" for resistance distance.
 #' @return The F function with class fv from spatstat.
 
+#' @seealso [linearG], [linearJ] and [linearpcfR] for other summary statistics,
+#' [minussampling] for minus sampling
+
 #' @examples
 #' # Estimate F function for spiders data
 #' X = spatstat.data::spiders
@@ -143,6 +152,9 @@ linearF = function(X,r,ppul,metric="G"){
 #' @param metric The metric used to measure distances. Should be either "G"
 #' for geodesic distance, or "R" for resistance distance.
 #' @return The G function with class fv from spatstat.
+
+#' @seealso [linearF], [linearJ] and [linearpcfR] for other summary statistics,
+#' [minussampling] for minus sampling
 
 #' @examples
 #' # Estimate G function for spiders data
@@ -201,6 +213,9 @@ linearG = function(X,r,metric="G"){
 #' @param metric The metric used to measure distances. Should be either "G"
 #' for geodesic distance, or "R" for resistance distance.
 #' @return The J function with class fv from spatstat.
+
+#' @seealso [linearF], [linearG] and [linearpcfR] for other summary statistics,
+#' [minussampling] for minus sampling
 
 #' @examples
 #' # Estimate J function for spiders data

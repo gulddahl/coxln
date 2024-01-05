@@ -16,6 +16,9 @@
 #' @param outpp If TRUE the a point pattern is returned; otherwise a dataframe is returned.
 #' @return Either a point pattern of type lpp from spatstat or a dataframe.
 
+#' @seealso [linearpcfR] for estimation of the pair correlation function
+#' using the relative boundary for edge correction
+
 #' @examples
 #' # Relative boundary from point no. 30 in the spiders data
 #' X = spatstat.data::spiders
@@ -99,6 +102,9 @@ relativeboundaryR = function(point,r,L=as.linnet(point),ILM=solve(CalcLaplacianM
 #' @param ILM For internal use.
 #' @return A real number representing the weight.
 
+#' @seealso [linearpcfR] for estimation of the pair correlation function
+#' using the resistance metric
+
 #' @export
 
 wR = function(u,r,L=as.linnet(u),ILM=solve(CalcLaplacianMatrix(L))){
@@ -123,6 +129,8 @@ wR = function(u,r,L=as.linnet(u),ILM=solve(CalcLaplacianMatrix(L))){
 #' @param r A vector of distances on which the estimate of the pair correlation
 #' function is calculated.
 #' @return The J function with class fv from spatstat.
+
+#' @seealso [linearF], [linearG] and [linearJ] for other summary statistics
 
 #' @examples
 #' # Estimate pcf for spiders data
