@@ -12,6 +12,7 @@
 #' @importFrom spatstat.geom as.ppp
 #' @importFrom spatstat.explore fv
 #' @importFrom spatstat.explore plot.fv
+#' @importFrom spatstat.model mincontrast
 #' @importFrom mvtnorm rmvnorm
 #' @importFrom GeneralizedHyperbolic rgig
 ## usethis namespace: end

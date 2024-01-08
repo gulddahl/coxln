@@ -128,6 +128,8 @@ wR = function(u,r,L=as.linnet(u),ILM=solve(CalcLaplacianMatrix(L))){
 #' @param X A point pattern on a linear network.
 #' @param r A vector of distances on which the estimate of the pair correlation
 #' function is calculated.
+#' @param silent If FALSE it outputs how far the algorithm has progressed during calculations;
+#' default is TRUe.
 #' @return The J function with class fv from spatstat.
 
 #' @seealso [linearF], [linearG] and [linearJ] for other summary statistics
@@ -141,13 +143,13 @@ wR = function(u,r,L=as.linnet(u),ILM=solve(CalcLaplacianMatrix(L))){
 
 #' @export
 
-linearpcfR = function(X,r){
+linearpcfR = function(X,r,silent=TRUE){
   L = as.linnet(X); n = npoints(X)
   ILM = solve(CalcLaplacianMatrix(L))
   pd = pairdistR(X)
   wRmat = matrix(0,n,n)
   for (i in 1:n){
-    print(c(i,n))
+    if (silent==FALSE) print(paste(i,"/",n))
     for (j in 1:n){
       if (i!=j) wRmat[i,j] = wR(u=X[i],r=pd[i,j],L=L,ILM=ILM)
     }

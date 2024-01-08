@@ -4,13 +4,16 @@
 \alias{linearpcfR}
 \title{Estimate pcf using resistance metric}
 \usage{
-linearpcfR(X, r)
+linearpcfR(X, r, silent = TRUE)
 }
 \arguments{
 \item{X}{A point pattern on a linear network.}
 
 \item{r}{A vector of distances on which the estimate of the pair correlation
 function is calculated.}
+
+\item{silent}{If FALSE it outputs how far the algorithm has progressed during calculations;
+default is TRUe.}
 }
 \value{
 The J function with class fv from spatstat.
