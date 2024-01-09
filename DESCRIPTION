@@ -1,7 +1,7 @@
 Package: coxln
 Type: Package
 Title: Cox processes on Linear Networks
-Version: 0.0.0.9007
+Version: 0.0.0.9008
 Authors@R: person("Rasmussen", "Jakob G.", email = "jgr@math.aau.dk", role = c("aut", "cre"))
 Description: Simulation algorithms for Cox processes driven by
     transformed Gaussian processes on linear networks, and other tools
@@ -18,5 +18,8 @@ Imports:
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+VignetteBuilder: knitr
