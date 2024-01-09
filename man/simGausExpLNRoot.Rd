@@ -6,7 +6,7 @@
 \usage{
 simGausExpLNRoot(
   pos,
-  beta,
+  s,
   mu = 0,
   sigma = 1,
   transform = "none",
@@ -18,7 +18,7 @@ simGausExpLNRoot(
 \arguments{
 \item{pos}{A point pattern on L defining the discretisation of the network.}
 
-\item{beta}{The parameter used in the exponential covariance function.}
+\item{s}{The scale parameter used in the exponential covariance function.}
 
 \item{mu}{The mean of the GRF. Only used if transform=="none".}
 
@@ -51,22 +51,22 @@ transforming the simulation for use in various cox point processes.
 \examples{
 # Gaussian process on network from dendrite data
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simGausExpLNRoot(pos,beta=0.01,mu=0,sigma=1,transform="none")
+X = simGausExpLNRoot(pos,s=0.01,mu=0,sigma=1,transform="none")
 plot(X)
 
 # simulation of intensity for LGCP
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=1)
+X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=1)
 plot(X)
 
 # simulation of intensity for ICP
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="icp",h=1,rho=1)
+X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="icp",h=1,rho=1)
 plot(X)
 
 # simulation of intensity for PCPP
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simGausExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=1)
+X = simGausExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=1)
 plot(X)
 }
 \seealso{

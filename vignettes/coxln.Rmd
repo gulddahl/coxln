@@ -214,7 +214,7 @@ For tree-shaped algorithms all the methods above work fine, but there is a much 
 ```{r fig.width=5,fig.height=5,fig.align='center'}
 L = as.linnet(dendrite)
 pos = makepos(L,0.5,duplicate=TRUE)
-sim = simCPExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=0.05)
+sim = simCPExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=0.05)
 plot(attr(sim,"Lambda"),style="width",adjust=2,main="")
 plot(as.ppp(sim),pch=20, cols="red",add=TRUE)
 ```

@@ -4,7 +4,7 @@
 \alias{simY}
 \title{Make simulations for simGausExpLNRoot}
 \usage{
-simY(pos, beta, mu, sigma, orderL, orderV)
+simY(pos, s, mu, sigma, orderL, orderV)
 }
 \description{
 This is an internal function for making the simulations

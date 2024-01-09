@@ -184,7 +184,7 @@ makeorderL = function(L,orderV=makeorderV(L)){
 #' @description This is an internal function for making the simulations
 #' used in the function simGausExpLNRoot.
 
-simY = function(pos,beta,mu,sigma,orderL,orderV){
+simY = function(pos,s,mu,sigma,orderL,orderV){
   L = as.linnet(pos)
   l = lengths_psp(L$lines)
   Y = rep(0,npoints(pos))
@@ -196,8 +196,8 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
         simj = c(Yvertices[L$from[j]],rep(0,length(posj)-1))
         if (length(posj)<2) stop("pos should contain duplicated points at vertices (i.e. use makepos function with duplicate=TRUE)")
         for (k in 2:length(posj)){
-          simj[k] = rnorm(1,exp(-l[j]*(posj[k]-posj[k-1])*beta)*simj[k-1],
-                          sqrt(1-exp(-2*l[j]*(posj[k]-posj[k-1])*beta)))
+          simj[k] = rnorm(1,exp(-l[j]*(posj[k]-posj[k-1])*s)*simj[k-1],
+                          sqrt(1-exp(-2*l[j]*(posj[k]-posj[k-1])*s)))
         }
         Yvertices[L$to[j]] = simj[length(posj)]
         Y[pos$data$seg==j]=simj
@@ -205,8 +205,8 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
         posj = pos$data$tp[pos$data$seg==j]
         simj = c(rep(0,length(posj)-1),Yvertices[L$to[j]])
         for (k in (length(posj)-1):1){
-          simj[k] = rnorm(1,exp(-l[j]*(posj[k+1]-posj[k])*beta)*simj[k+1],
-                          sqrt(1-exp(-2*l[j]*(posj[k+1]-posj[k])*beta)))
+          simj[k] = rnorm(1,exp(-l[j]*(posj[k+1]-posj[k])*s)*simj[k+1],
+                          sqrt(1-exp(-2*l[j]*(posj[k+1]-posj[k])*s)))
         }
         Yvertices[L$from[j]] = simj[1]
         Y[pos$data$seg==j]=simj
@@ -226,7 +226,7 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
 #' transforming the simulation for use in various cox point processes.
 
 #' @param pos A point pattern on L defining the discretisation of the network.
-#' @param beta The parameter used in the exponential covariance function.
+#' @param s The scale parameter used in the exponential covariance function.
 #' @param mu The mean of the GRF. Only used if transform=="none".
 #' @param sigma The standard deviation used in the GRF. Ignored if transform=="pcpp".
 #' @param transform The transform applied to the GRF. "none" gives an untransformed GRF,
@@ -250,35 +250,35 @@ simY = function(pos,beta,mu,sigma,orderL,orderV){
 #' @examples
 #' # Gaussian process on network from dendrite data
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simGausExpLNRoot(pos,beta=0.01,mu=0,sigma=1,transform="none")
+#' X = simGausExpLNRoot(pos,s=0.01,mu=0,sigma=1,transform="none")
 #' plot(X)
 #'
 #' # simulation of intensity for LGCP
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=1)
+#' X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for ICP
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simGausExpLNRoot(pos,beta=0.01,sigma=1,transform="icp",h=1,rho=1)
+#' X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="icp",h=1,rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for PCPP
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simGausExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=1)
+#' X = simGausExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=1)
 #' plot(X)
 
 #' @export
 
-simGausExpLNRoot = function(pos,beta,mu=0,sigma=1,transform="none",h=1,rho=1,orderV=makeorderV(as.linnet(pos))){
+simGausExpLNRoot = function(pos,s,mu=0,sigma=1,transform="none",h=1,rho=1,orderV=makeorderV(as.linnet(pos))){
   L = as.linnet(pos)
   if(is.tree(L)==FALSE) stop("The linear network is not a connected tree.")
   orderL = makeorderL(L,orderV)
-  if (transform=="none") Y = simY(pos,beta,mu,sigma,orderL,orderV)
-  else if (transform=="lgcp") Y = rho*exp(simY(pos,beta,mu=-sigma^2/2,sigma,orderL,orderV))
+  if (transform=="none") Y = simY(pos,s,mu,sigma,orderL,orderV)
+  else if (transform=="lgcp") Y = rho*exp(simY(pos,s,mu=-sigma^2/2,sigma,orderL,orderV))
   else if (transform=="icp"|transform=="pcpp") {
     Y = rep(0,npoints(pos))
-    for (i in 1:h) Y = Y + simY(pos,beta,0,1,orderL,orderV)^2
+    for (i in 1:h) Y = Y + simY(pos,s,0,1,orderL,orderV)^2
     if (transform=="icp") Y = rho*exp(-sigma^2*Y)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y = rho*Y/h
   } else {
@@ -368,26 +368,26 @@ simGausLNRoot = function(pos,simalgo,mu=0,sigma=1,transform="none",h=1,rho=1,ord
   L = as.linnet(pos)
   if(is.tree(L)==FALSE) stop("The linear network is not a tree.")
   orderL = makeorderL(L,orderV)
-  beta = simalgo
+  s = simalgo
   if (transform=="none"|transform=="lgcp"){
     Ysum = rep(0,npoints(pos))
-    for (i in 1:length(beta)){
-      Y = simY(pos,beta[i],mu=0,sigma=1,orderL,orderV)
+    for (i in 1:length(s)){
+      Y = simY(pos,s[i],mu=0,sigma=1,orderL,orderV)
       Ysum = Y + Ysum
     }
-    if (transform=="none") Y2 = sigma*1/sqrt(length(beta))*Ysum+mu
-    if (transform=="lgcp") Y2 = rho*exp(sigma*1/sqrt(length(beta))*Ysum-sigma^2/2)
+    if (transform=="none") Y2 = sigma*1/sqrt(length(s))*Ysum+mu
+    if (transform=="lgcp") Y2 = rho*exp(sigma*1/sqrt(length(s))*Ysum-sigma^2/2)
   }
   if (transform=="icp"|transform=="pcpp"){
     Ysum2 = rep(0,npoints(pos))
     for (j in 1:h){
       Ysum = rep(0,npoints(pos))
-      for (i in 1:length(beta)){
-        if (transform=="icp") Y = simY(pos,beta[i],mu=0,sigma=sigma,orderL,orderV)
-        if (transform=="pcpp") Y = simY(pos,beta[i],mu=0,sigma=1,orderL,orderV)
+      for (i in 1:length(s)){
+        if (transform=="icp") Y = simY(pos,s[i],mu=0,sigma=sigma,orderL,orderV)
+        if (transform=="pcpp") Y = simY(pos,s[i],mu=0,sigma=1,orderL,orderV)
         Ysum = Y + Ysum
       }
-      Ysum2 = Ysum2 + (1/sqrt(length(beta))*Ysum)^2
+      Ysum2 = Ysum2 + (1/sqrt(length(s))*Ysum)^2
     }
     if (transform=="icp") Y2 = rho*exp(-Ysum2)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y2 = rho*Ysum2/h

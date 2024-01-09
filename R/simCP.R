@@ -78,7 +78,7 @@ simCPLNDisc = function(pos,covfunc,sigma=1,metric="G",transform="lgcp",h=1,rho=1
 
 #' @param pos A point pattern on the linear network representing the grid on which the underlying
 #' Gaussian process is simulated. This point pattern can be made with the function makepos.
-#' @param beta The parameter used in the exponential covariance function.
+#' @param s The scale parameter used in the exponential covariance function.
 #' @param sigma The standard deviation of the Gaussian process. Defaults to 1 and only used
 #' if transform equal "lgcp" or "icp".
 #' @param transform Type of Cox process simulated. Possible values are "lgcp", "icp" or "pcpp"
@@ -102,27 +102,27 @@ simCPLNDisc = function(pos,covfunc,sigma=1,metric="G",transform="lgcp",h=1,rho=1
 #' @examples
 #' # log Gaussian Cox process
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simCPExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
+#' X = simCPExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # Interrupted Cox process
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simCPExpLNRoot(pos,beta=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
+#' X = simCPExpLNRoot(pos,s=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # Permanental Cox point process
 #' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-#' X = simCPExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
+#' X = simCPExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 
 #' @export
 
-simCPExpLNRoot = function(pos,beta,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeorderV(as.linnet(pos)),savelambda=TRUE){
+simCPExpLNRoot = function(pos,s,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeorderV(as.linnet(pos)),savelambda=TRUE){
   if (transform!="lgcp"&transform!="icp"&transform!="pcpp") stop("transform must be lgcp, icp or pcpp")
-  GP = simGausExpLNRoot(pos,beta,mu=0,sigma,transform,h,rho,orderV)
+  GP = simGausExpLNRoot(pos,s,mu=0,sigma,transform,h,rho,orderV)
   X = rpoislpp(GP)
   if (savelambda==TRUE) attr(X,"Lambda") = GP
   return(X)

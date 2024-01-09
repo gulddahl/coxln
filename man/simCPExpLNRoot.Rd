@@ -6,7 +6,7 @@
 \usage{
 simCPExpLNRoot(
   pos,
-  beta,
+  s,
   sigma = 1,
   transform = "lgcp",
   h = 1,
@@ -19,7 +19,7 @@ simCPExpLNRoot(
 \item{pos}{A point pattern on the linear network representing the grid on which the underlying
 Gaussian process is simulated. This point pattern can be made with the function makepos.}
 
-\item{beta}{The parameter used in the exponential covariance function.}
+\item{s}{The scale parameter used in the exponential covariance function.}
 
 \item{sigma}{The standard deviation of the Gaussian process. Defaults to 1 and only used
 if transform equal "lgcp" or "icp".}
@@ -53,19 +53,19 @@ random field is equipped with an exponential covariance function.
 \examples{
 # log Gaussian Cox process
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simCPExpLNRoot(pos,beta=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
+X = simCPExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # Interrupted Cox process
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simCPExpLNRoot(pos,beta=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
+X = simCPExpLNRoot(pos,s=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # Permanental Cox point process
 pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
-X = simCPExpLNRoot(pos,beta=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
+X = simCPExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 }
