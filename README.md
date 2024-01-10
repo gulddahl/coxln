@@ -26,7 +26,7 @@ You can install the development version of coxln from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("gulddahl/coxln")
+devtools::install_github("gulddahl/coxln",dependencies=TRUE,build_vignettes=TRUE)
 ```
 
 ## Examples
@@ -84,3 +84,13 @@ The estimated parameters are now stored in param, which in this case is
 given by (sigma,s) = (0.8577, 0.0099), i.e. the standard deviation of
 the underlying Gaussian random field and the scaling parameter of the
 exponential covariance function.
+
+# Vignette
+
+An example of how to do a statistical analysis of a dataset using the
+functions from the coxln package is provided in the vignette for this
+package:
+
+``` r
+vignette("coxln")
+```
