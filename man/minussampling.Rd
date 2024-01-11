@@ -33,14 +33,14 @@ geodesic distance or resistance distance.
 }
 \examples{
 # Removes points from the dendrite dataset using geodesic metric
-X = spatstat.data::dendrite
+X = dendrite
 r = 20
 Xm = minussampling(X,r,metric="G")
 plot(X)
 plot(Xm, add=TRUE, cols=3)
 
 # Removes points from the spiders dataset using resistance metric
-X = spatstat.data::spiders
+X = spiders
 r = 200
 Xm = minussampling(X,r,metric="R")
 plot(X)

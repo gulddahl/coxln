@@ -53,37 +53,37 @@ discretising the linear network and using the multivariate normal distribution o
 }
 \examples{
 # Gaussian process with exponential covariance function and geodesic metric
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 plot(X)
 
 # Gaussian process with exponential covariance function and resistance metric
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,mu=0,sigma=1,metric="R")
 plot(X)
 
 # Gaussian process with covariance function with gamma Bernstein CDF
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("gamma",c(1,1))
 X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 plot(X)
 
 # Simulation of random intensity for log Gaussian Cox process
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=10)
 plot(X)
 
 # Simulation of random intensity for interrupted Cox process
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=10)
 plot(X)
 
 # Simulation of random intensity for permanental Cox point process
-pos = makepos(spatstat.data::simplenet,50)
+pos = makepos(simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simGausLNDisc(pos,covfunc,transform="pcpp",h=1,rho=10)
 plot(X)

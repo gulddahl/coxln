@@ -17,7 +17,7 @@
 
 #' @examples
 #' # Find the end points from simplenet from spatstat
-#' ep = findendpoints(spatstat.data::simplenet)
+#' ep = findendpoints(simplenet)
 #' plot(ep)
 
 #' @export
@@ -58,14 +58,14 @@ findendpoints = function(L){
 
 #' @examples
 #' # Removes points from the dendrite dataset using geodesic metric
-#' X = spatstat.data::dendrite
+#' X = dendrite
 #' r = 20
 #' Xm = minussampling(X,r,metric="G")
 #' plot(X)
 #' plot(Xm, add=TRUE, cols=3)
 #'
 #' # Removes points from the spiders dataset using resistance metric
-#' X = spatstat.data::spiders
+#' X = spiders
 #' r = 200
 #' Xm = minussampling(X,r,metric="R")
 #' plot(X)
@@ -108,14 +108,14 @@ minussampling = function(X,r,metric="G",saveind=FALSE){
 
 #' @examples
 #' # Estimate F function for spiders data
-#' X = spatstat.data::spiders
+#' X = spiders
 #' r = seq(0,250,length.out=50)
 #' ppul = 0.02
 #' F = linearF(X,r,ppul,metric="G")
 #' plot(F)
 #'
 #' # Estimate F function for dendrite data
-#' X = spatstat.data::dendrite
+#' X = dendrite
 #' r = seq(0,5,length.out=50)
 #' ppul = 0.5
 #' F = linearF(X,r,ppul,metric="G")
@@ -158,15 +158,15 @@ linearF = function(X,r,ppul,metric="G"){
 
 #' @examples
 #' # Estimate G function for spiders data
-#' X = spatstat.data::spiders
+#' X = spiders
 #' r = seq(0,250,length.out=50)
 #' G = linearG(X,r,metric="G")
 #' plot(G)
 #'
 #' # Estimate G function for dendrite data
-#' X = spatstat.data::dendrite
+#' X = dendrite
 #' r = seq(0,5,length.out=50)
-#' G = linearG(X,r,ppul,metric="G")
+#' G = linearG(X,r,metric="G")
 #' plot(G)
 
 #' @export
@@ -219,14 +219,14 @@ linearG = function(X,r,metric="G"){
 
 #' @examples
 #' # Estimate J function for spiders data
-#' X = spatstat.data::spiders
+#' X = spiders
 #' r = seq(0,250,length.out=50)
 #' ppul = 0.02
 #' J = linearJ(X,r,ppul,metric="G")
 #' plot(J)
 #'
 #' # Estimate J function for dendrite data
-#' X = spatstat.data::dendrite
+#' X = dendrite
 #' r = seq(0,5,length.out=50)
 #' ppul = 0.5
 #' J = linearJ(X,r,ppul,metric="G")

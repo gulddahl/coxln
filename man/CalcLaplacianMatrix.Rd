@@ -17,12 +17,12 @@ Calculates the Laplacian matrix of a linear network from, and adds a +1
 to the first entry in the matrix to make it invertible.
 }
 \examples{
-CalcLaplacianMatrix(spatstat.data::simplenet)
+CalcLaplacianMatrix(simplenet)
 
-L = as.linnet(spatstat.data::spiders)
+L = as.linnet(spiders)
 CalcLaplacianMatrix(L)
 
-L = as.linnet(spatstat.data::dendrite,sparse=FALSE)
+L = as.linnet.lpp(dendrite,sparse=FALSE)
 CalcLaplacianMatrix(L)
 }
 \seealso{

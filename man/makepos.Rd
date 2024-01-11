@@ -25,7 +25,7 @@ by placing points on the vertices and points regularly
 spaced on each line segment.
 }
 \examples{
-makepos(spatstat.data::simplenet,10)
+makepos(simplenet,10)
 }
 \seealso{
 \link{simGausLNRoot}, \link{simGausExpLNRoot}, \link{simGausLNDisc} for

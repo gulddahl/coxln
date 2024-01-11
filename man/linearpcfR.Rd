@@ -29,7 +29,7 @@ The resistance metric is used for distances.
 }
 \examples{
 # Estimate pcf for spiders data
-X = spatstat.data::spiders
+X = spiders
 r = seq(0,250,length.out=50)
 pcf = linearpcfR(X,r)
 plot(pcf)

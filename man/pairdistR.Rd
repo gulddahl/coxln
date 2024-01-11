@@ -36,22 +36,22 @@ a point pattern or two patterns on a linear network. Can also calculate the deri
 }
 \examples{
 # All pairwise distances in the spiders dataset
-X = spatstat.data::spiders
+X = spiders
 pairdistR(X)
 
 # Sparse representations in the linear network does not work
-X = spatstat.data::dendrite
+X = dendrite
 X = as.lpp(X,sparse=FALSE)
 pairdistR(X)
 
 # All pairwise distances between two Poisson processes on simplenet
-L = spatstat.data::simplenet
+L = simplenet
 X = rpoislpp(5,L)
 Y = rpoislpp(5,L)
 pairdistR(X,Y)
 
 # The derivative of the resistance distance
-X = spatstat.data::spiders
+X = spiders
 pairdistR(X,derivative=TRUE)
 }
 \seealso{

@@ -21,7 +21,7 @@
 
 #' @examples
 #' # Relative boundary from point no. 30 in the spiders data
-#' X = spatstat.data::spiders
+#' X = spiders
 #' point = X[30]
 #' r = 180
 #' rb = relativeboundaryR(point,r)
@@ -29,7 +29,7 @@
 #' plot(rb,add=TRUE,cols=2)
 
 #' # Relative boundary from point no. 10 in the chicago data
-#' X = spatstat.data::chicago
+#' X = chicago
 #' point = X[10]
 #' r = 100
 #' rb = relativeboundaryR(point,r)
@@ -136,7 +136,7 @@ wR = function(u,r,L=as.linnet(u),ILM=solve(CalcLaplacianMatrix(L))){
 
 #' @examples
 #' # Estimate pcf for spiders data
-#' X = spatstat.data::spiders
+#' X = spiders
 #' r = seq(0,250,length.out=50)
 #' pcf = linearpcfR(X,r)
 #' plot(pcf)

@@ -32,14 +32,14 @@ geodesic and the resistance metric can be used for distances
 }
 \examples{
 # Estimate F function for spiders data
-X = spatstat.data::spiders
+X = spiders
 r = seq(0,250,length.out=50)
 ppul = 0.02
 F = linearF(X,r,ppul,metric="G")
 plot(F)
 
 # Estimate F function for dendrite data
-X = spatstat.data::dendrite
+X = dendrite
 r = seq(0,5,length.out=50)
 ppul = 0.5
 F = linearF(X,r,ppul,metric="G")

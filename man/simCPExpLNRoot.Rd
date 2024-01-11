@@ -52,19 +52,19 @@ random field is equipped with an exponential covariance function.
 }
 \examples{
 # log Gaussian Cox process
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simCPExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # Interrupted Cox process
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simCPExpLNRoot(pos,s=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # Permanental Cox point process
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simCPExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)

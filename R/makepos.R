@@ -18,7 +18,7 @@
 #' grid of points on a linear network
 
 #' @examples
-#' makepos(spatstat.data::simplenet,10)
+#' makepos(simplenet,10)
 
 #' @export
 

@@ -18,10 +18,10 @@ number of line segments from the vertex internally numbered as 1).
 }
 \examples{
 # Make order on the vertices from simplenet
-makeorderV(spatstat.data::simplenet)
+makeorderV(simplenet)
 
 # Make order on the vertices in the network used in the dendrite data
-makeorderV(as.linnet(spatstat.data::dendrite))
+makeorderV(as.linnet(dendrite))
 }
 \seealso{
 \link{makeorderL} for orders on line segments, \link{simGausExpLNRoot} or

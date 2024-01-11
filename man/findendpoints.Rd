@@ -23,7 +23,7 @@ on the same network giving all the end points in the network.
 }
 \examples{
 # Find the end points from simplenet from spatstat
-ep = findendpoints(spatstat.data::simplenet)
+ep = findendpoints(simplenet)
 plot(ep)
 }
 \seealso{

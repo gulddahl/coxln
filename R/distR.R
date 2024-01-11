@@ -25,12 +25,12 @@ getdiag = function(x){
 #' metric using the Laplacian matrix
 
 #' @examples
-#' CalcLaplacianMatrix(spatstat.data::simplenet)
+#' CalcLaplacianMatrix(simplenet)
 #'
-#' L = as.linnet(spatstat.data::spiders)
+#' L = as.linnet(spiders)
 #' CalcLaplacianMatrix(L)
 #'
-#' L = as.linnet(spatstat.data::dendrite,sparse=FALSE)
+#' L = as.linnet.lpp(dendrite,sparse=FALSE)
 #' CalcLaplacianMatrix(L)
 
 #' @export
@@ -51,9 +51,9 @@ CalcLaplacianMatrix = function(L){
 #' linear network.
 
 #' @param segu The line segment number of point u.
-#' @param tu The position of u on the line segment (a value in [0,1])
+#' @param tu The position of u on the line segment (a value between 0 and 1)
 #' @param segv The line segment number of point v.
-#' @param tv The position of v on the line segment (a value in [0,1])
+#' @param tv The position of v on the line segment (a value between 0 and 1)
 #' @param L A linear network of class linnet from the spatstat package.
 #' @param ILM For internal use.
 #' @returns The resistance distance between u and v.
@@ -64,7 +64,7 @@ CalcLaplacianMatrix = function(L){
 
 #' @examples
 #' # Distance between midpoints in segments number 1 and 2
-#' distR(1,0.5,2,0.5,spatstat.data::simplenet)
+#' distR(1,0.5,2,0.5,simplenet)
 
 #' @export
 
@@ -114,22 +114,22 @@ distR = function(segu,tu,segv,tv,L,ILM = solve(CalcLaplacianMatrix(L))){
 
 #' @examples
 #' # All pairwise distances in the spiders dataset
-#' X = spatstat.data::spiders
+#' X = spiders
 #' pairdistR(X)
 #'
 #' # Sparse representations in the linear network does not work
-#' X = spatstat.data::dendrite
+#' X = dendrite
 #' X = as.lpp(X,sparse=FALSE)
 #' pairdistR(X)
 #'
 #' # All pairwise distances between two Poisson processes on simplenet
-#' L = spatstat.data::simplenet
+#' L = simplenet
 #' X = rpoislpp(5,L)
 #' Y = rpoislpp(5,L)
 #' pairdistR(X,Y)
 #'
 #' # The derivative of the resistance distance
-#' X = spatstat.data::spiders
+#' X = spiders
 #' pairdistR(X,derivative=TRUE)
 
 #' @export

@@ -27,30 +27,29 @@
 #' @returns A point process on a linear network with class lpp.
 
 #' @seealso [simGausLNDisc] for simulation of the underlying GRF,
-#' [simExpCPLNRoot] or [simCPLNRoot] for fast simulation of Cox
+#' [simCPExpLNRoot] or [simCPLNRoot] for fast simulation of Cox
 #' processes with exponential or arbitrary
 #' covariance functions on tree-shaped linear networks,
 #' [covfunctypes] for covariance functions, [paircorfunc]
 #' for pair correlation functions
 
-
 #' @examples
 #' # log Gaussian Cox process with exponential covariance function and geodesic metric
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simCPLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=5)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' plot(X,add=TRUE)
 #'
 #' # Interrupted Cox process with gamma Bernstein CDF and resistance metric
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("gamma",c(1,1))
 #' X = simCPLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=5)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' plot(X,add=TRUE)
 #'
 #' # Permanental Cox point process with inverse gamma Bernstein CDF and resistance metric
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("invgamma",c(1,1))
 #' X = simCPLNDisc(pos,covfunc,transform="pcpp",h=1,rho=5)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
@@ -101,19 +100,19 @@ simCPLNDisc = function(pos,covfunc,sigma=1,metric="G",transform="lgcp",h=1,rho=1
 
 #' @examples
 #' # log Gaussian Cox process
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simCPExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # Interrupted Cox process
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simCPExpLNRoot(pos,s=0.01,sigma=10,transform="icp",h=1,rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # Permanental Cox point process
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simCPExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=0.05,savelambda=TRUE)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
@@ -176,6 +175,8 @@ simCPExpLNRoot = function(pos,s,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeor
 #' @param orderV The order on the vertices used for defining the order of the
 #' line segments used in the simulation; default is the order given by the function makeorderV.
 #' Warning: Using other orders may result in a simulation with the wrong distribution.
+#' @param savelambda If TRUE the simulation of the underlying Gaussian process is saved
+#' as an attribute. Default is TRUE.
 #' @returns A point process on a linear network with class lpp.
 
 #' @seealso [simGausLNRoot] for simulation of the underlying GRF,
@@ -187,21 +188,21 @@ simCPExpLNRoot = function(pos,s,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeor
 
 #' @examples
 #' # simulation of LGCP with gamma Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # simulation of ICP with inverse gamma Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # simulation of PCPP with generalized inverse Gaussian Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,transform="pcpp",h=1,rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")

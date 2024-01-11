@@ -27,15 +27,15 @@ resistance metric can be used for distances
 }
 \examples{
 # Estimate G function for spiders data
-X = spatstat.data::spiders
+X = spiders
 r = seq(0,250,length.out=50)
 G = linearG(X,r,metric="G")
 plot(G)
 
 # Estimate G function for dendrite data
-X = spatstat.data::dendrite
+X = dendrite
 r = seq(0,5,length.out=50)
-G = linearG(X,r,ppul,metric="G")
+G = linearG(X,r,metric="G")
 plot(G)
 }
 \seealso{

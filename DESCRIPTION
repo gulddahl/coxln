@@ -10,16 +10,22 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 Imports: 
+    spatstat.linnet,
     spatstat.data,
     spatstat.geom,
-    spatstat.linnet,
+    spatstat.explore,
+    spatstat.model,
     mvtnorm,
     GeneralizedHyperbolic
+Depends:
+    spatstat
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    GET,
+    codetools
 Config/testthat/edition: 3
 VignetteBuilder: knitr

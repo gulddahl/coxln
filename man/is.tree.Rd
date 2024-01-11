@@ -17,10 +17,10 @@ Checks whether L is a connected tree.
 }
 \examples{
 # Check whether simplenet from spatstat is a connected tree
-is.tree(spatstat.data::simplenet)
+is.tree(simplenet)
 
 # Check whether the network used in the dendrite data is a connected tree
-is.tree(as.linnet(spatstat.data::dendrite))
+is.tree(as.linnet(dendrite))
 }
 \seealso{
 \link{simCPLNRoot} or \link{simCPExpLNRoot} for simulation of Cox processes

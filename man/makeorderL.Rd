@@ -21,10 +21,10 @@ to a line segments as the lowest order of the vertices it connects to.
 }
 \examples{
 # Make order on the vertices from simplenet
-makeorderL(spatstat.data::simplenet)
+makeorderL(simplenet)
 
 # Make order on the vertices in the network used in the dendrite data
-makeorderL(as.linnet(spatstat.data::dendrite))
+makeorderL(as.linnet(dendrite))
 }
 \seealso{
 \link{makeorderV} for orders on vertices, \link{simGausExpLNRoot} or

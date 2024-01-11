@@ -34,37 +34,37 @@
 
 #' @examples
 #' # Gaussian process with exponential covariance function and geodesic metric
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 #' plot(X)
 #'
 #' # Gaussian process with exponential covariance function and resistance metric
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simGausLNDisc(pos,covfunc,mu=0,sigma=1,metric="R")
 #' plot(X)
 #'
 #' # Gaussian process with covariance function with gamma Bernstein CDF
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("gamma",c(1,1))
 #' X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 #' plot(X)
 #'
 #' # Simulation of random intensity for log Gaussian Cox process
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simGausLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=10)
 #' plot(X)
 #'
 #' # Simulation of random intensity for interrupted Cox process
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simGausLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=10)
 #' plot(X)
 #'
 #' # Simulation of random intensity for permanental Cox point process
-#' pos = makepos(spatstat.data::simplenet,50)
+#' pos = makepos(simplenet,50)
 #' covfunc = covfunctypes("expcov",1)
 #' X = simGausLNDisc(pos,covfunc,transform="pcpp",h=1,rho=10)
 #' plot(X)
@@ -84,7 +84,7 @@ simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=
     if (transform=="icp") Y = rho*exp(-sigma^2*Y)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y = rho*Y/h
   }
-  pos = spatstat.geom::setmarks(pos,Y)
+  pos = setmarks(pos,Y)
   f = nnfun.lpp(pos,value="mark")
   return(f)
 }
@@ -104,10 +104,10 @@ simGausLNDisc = function(pos,covfunc,mu=0,sigma=1,metric="G",transform="none",h=
 
 #' @examples
 #' # Check whether simplenet from spatstat is a connected tree
-#' is.tree(spatstat.data::simplenet)
+#' is.tree(simplenet)
 #'
 #' # Check whether the network used in the dendrite data is a connected tree
-#' is.tree(as.linnet(spatstat.data::dendrite))
+#' is.tree(as.linnet(dendrite))
 
 #' @export
 
@@ -129,10 +129,10 @@ is.tree = function(L) return(is.connected.linnet(L)&npoints(L$vertices)==L$lines
 
 #' @examples
 #' # Make order on the vertices from simplenet
-#' makeorderV(spatstat.data::simplenet)
+#' makeorderV(simplenet)
 #'
 #' # Make order on the vertices in the network used in the dendrite data
-#' makeorderV(as.linnet(spatstat.data::dendrite))
+#' makeorderV(as.linnet(dendrite))
 
 #' @export
 
@@ -166,10 +166,10 @@ makeorderV = function(L){
 
 #' @examples
 #' # Make order on the vertices from simplenet
-#' makeorderL(spatstat.data::simplenet)
+#' makeorderL(simplenet)
 #'
 #' # Make order on the vertices in the network used in the dendrite data
-#' makeorderL(as.linnet(spatstat.data::dendrite))
+#' makeorderL(as.linnet(dendrite))
 
 #' @export
 
@@ -183,6 +183,15 @@ makeorderL = function(L,orderV=makeorderV(L)){
 
 #' @description This is an internal function for making the simulations
 #' used in the function simGausExpLNRoot.
+#'
+#' @param pos A point pattern on L defining the discretisation of the network.
+#' @param s The scale parameter used in the exponential covariance function.
+#' @param mu The mean of the GRF.
+#' @param sigma The standard deviation used in the GRF.
+#' @param orderL The order on the line segments used in the simulation.
+#' @param orderV The order on the vertices used for defining the order of the
+#' line segments used in the simulation.
+#' @returns A simulation of a (transformed) Gaussian process with class linfun from spatstat.
 
 simY = function(pos,s,mu,sigma,orderL,orderV){
   L = as.linnet(pos)
@@ -249,22 +258,22 @@ simY = function(pos,s,mu,sigma,orderL,orderV){
 
 #' @examples
 #' # Gaussian process on network from dendrite data
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simGausExpLNRoot(pos,s=0.01,mu=0,sigma=1,transform="none")
 #' plot(X)
 #'
 #' # simulation of intensity for LGCP
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for ICP
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="icp",h=1,rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for PCPP
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' X = simGausExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=1)
 #' plot(X)
 
@@ -284,7 +293,7 @@ simGausExpLNRoot = function(pos,s,mu=0,sigma=1,transform="none",h=1,rho=1,orderV
   } else {
     stop("Invalid transform: use none, lgcp, icp or pcpp.")
   }
-  pos = spatstat.geom::setmarks(pos,Y)
+  pos = setmarks(pos,Y)
   f = nnfun(pos,value="mark")
   return(f)
 }
@@ -339,25 +348,25 @@ simGausExpLNRoot = function(pos,s,mu=0,sigma=1,transform="none",h=1,rho=1,orderV
 
 #' @examples
 #' # Gaussian process on network with gamma Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,mu=0,sigma=1,transform="none")
 #' plot(X)
 #'
 #' # simulation of intensity for LGCP with gamma Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for ICP with inverse gamma Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for PCPP with generalized inverse Gaussian Bernstein density
-#' pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+#' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 #' simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,transform="pcpp",h=1,rho=1)
 #' plot(X)
@@ -392,8 +401,7 @@ simGausLNRoot = function(pos,simalgo,mu=0,sigma=1,transform="none",h=1,rho=1,ord
     if (transform=="icp") Y2 = rho*exp(-Ysum2)*(1+2*sigma^2)^(h/2)
     if (transform=="pcpp") Y2 = rho*Ysum2/h
   }
-  #marks(pos) = Y2
-  pos = spatstat.geom::setmarks(pos,Y2)
+  pos = setmarks(pos,Y2)
   f = nnfun(pos,value="mark")
   return(f)
 }

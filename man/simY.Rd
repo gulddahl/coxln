@@ -6,6 +6,23 @@
 \usage{
 simY(pos, s, mu, sigma, orderL, orderV)
 }
+\arguments{
+\item{pos}{A point pattern on L defining the discretisation of the network.}
+
+\item{s}{The scale parameter used in the exponential covariance function.}
+
+\item{mu}{The mean of the GRF.}
+
+\item{sigma}{The standard deviation used in the GRF.}
+
+\item{orderL}{The order on the line segments used in the simulation.}
+
+\item{orderV}{The order on the vertices used for defining the order of the
+line segments used in the simulation.}
+}
+\value{
+A simulation of a (transformed) Gaussian process with class linfun from spatstat.
+}
 \description{
 This is an internal function for making the simulations
 used in the function simGausExpLNRoot.

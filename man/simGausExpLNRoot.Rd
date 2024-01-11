@@ -50,22 +50,22 @@ transforming the simulation for use in various cox point processes.
 }
 \examples{
 # Gaussian process on network from dendrite data
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simGausExpLNRoot(pos,s=0.01,mu=0,sigma=1,transform="none")
 plot(X)
 
 # simulation of intensity for LGCP
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="lgcp",rho=1)
 plot(X)
 
 # simulation of intensity for ICP
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simGausExpLNRoot(pos,s=0.01,sigma=1,transform="icp",h=1,rho=1)
 plot(X)
 
 # simulation of intensity for PCPP
-pos = makepos(as.linnet(spatstat.data::dendrite),0.5,duplicate=TRUE)
+pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
 X = simGausExpLNRoot(pos,s=0.01,transform="pcpp",h=1,rho=1)
 plot(X)
 }

@@ -33,14 +33,14 @@ geodesic and the resistance metric can be used for distances
 }
 \examples{
 # Estimate J function for spiders data
-X = spatstat.data::spiders
+X = spiders
 r = seq(0,250,length.out=50)
 ppul = 0.02
 J = linearJ(X,r,ppul,metric="G")
 plot(J)
 
 # Estimate J function for dendrite data
-X = spatstat.data::dendrite
+X = dendrite
 r = seq(0,5,length.out=50)
 ppul = 0.5
 J = linearJ(X,r,ppul,metric="G")
