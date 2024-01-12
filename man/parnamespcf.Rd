@@ -8,7 +8,7 @@ parnamespcf(covtype, transform = "none")
 }
 \arguments{
 \item{covtype}{The type of covariance function used;
-currently available: "expcov", "gamma", "invgamma" and "gig";
+currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
 see details under the function covfunctypes.}
 
 \item{transform}{The type of point process used; "lgcp" for
@@ -30,10 +30,10 @@ parameter vector of the pair correlation function.
 parnamespcf("expcov","lgcp")
 
 # parameters in pcf for ICP with gamma covariance function
-parnamespcf("gamma","icp")
+parnamespcf("gammabd","icp")
 
 # parameters in covariance function with generalized inverse Gaussian as Bernstein distribution
-parnamespcf("gig")
+parnamespcf("gigbd")
 }
 \seealso{
 \link{paircorfunc} for pair correlation functions, \link{covfunctypes}

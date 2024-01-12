@@ -173,10 +173,10 @@ Other covariance functions than the exponential can also be used. Currently thre
 
 ## Covariance function with gamma Bernstein distribution
 
-Here we use type="gamma" in the definition of the covariance function, i.e. we write the following to get a pair correlation function for a LGCP with gamma Bernstein distribution:
+Here we use type="gammabd" in the definition of the covariance function, i.e. we write the following to get a pair correlation function for a LGCP with gamma Bernstein distribution:
 
 ```{r}
-g = paircorfunc("gamma","lgcp")
+g = paircorfunc("gammabd","lgcp")
 ```
 
 The covariance function is now given by 
@@ -184,17 +184,17 @@ The covariance function is now given by
 c(r) = (1+r/\phi)^{-\tau}
 \]
 where parameters are now given by a shape parameter tau and a rate parameter phi. 
-The parameter vector that g depends on is always given by a vector containing first the parameters from the chosen Cox process and second the chosen covariance function. For example for an LGCP model with type="gamma", the parameter vector of the pair correlation function is given by $(\sigma,\tau,\phi)$, or for an similar ICP model it is given by $(\sigma,h,\tau,\phi)$. When estimating the parameters by using the mincontrast function, the startpar input should always be a vector of the same length as the parameter vector. In case that there is confusing about the parameters and their order, the following function outputs the vector of parameter names for a given combination of covariance function and point process:
+The parameter vector that g depends on is always given by a vector containing first the parameters from the chosen Cox process and second the chosen covariance function. For example for an LGCP model with type="gammabd", the parameter vector of the pair correlation function is given by $(\sigma,\tau,\phi)$, or for an similar ICP model it is given by $(\sigma,h,\tau,\phi)$. When estimating the parameters by using the mincontrast function, the startpar input should always be a vector of the same length as the parameter vector. In case that there is confusing about the parameters and their order, the following function outputs the vector of parameter names for a given combination of covariance function and point process:
 
 ```{r}
-parnamespcf("gamma","lgcp")
+parnamespcf("gammabd","lgcp")
 ```
 
 Note that all the models also have the intensity parameter $\rho$, which never appears in the pair correlation function. Therefore this never enters the minimum contrast estimation procedure, but is estimated as in the previous analysis.
 
 ## Covariance function with inverse gamma Bernstein distribution
 
-Here we use type="invgamma" to get the covariance function given by
+Here we use type="invgammabd" to get the covariance function given by
 \[
 c(r) = 2(r \phi)^{\tau/2}K_\tau(2 \sqrt{r \phi}/(\Gamma(\tau))
 \]
@@ -202,7 +202,7 @@ with shape parameter tau and scale parameter phi.
 
 ## Covariance function with generalized inverse Gaussian Bernstein distribution
 
-Here we use type="gig":
+Here we use type="gigbd":
 \[
 c(r) = (1+2r/\psi)^{-\lambda/2}\frac{K_\lambda(\sqrt{(2r+\psi)\chi})}{K_\lambda(\sqrt{\psi \chi})}
 \] with parameter vector $(\chi,\psi,\lambda)$.
@@ -230,7 +230,7 @@ For non-exponential covariance functions there is also another algorithm for tre
 ```{r fig.width=5,fig.height=5,fig.align='center'}
 L = as.linnet(dendrite)
 pos = makepos(L,0.5,duplicate=TRUE)
-simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+simalgo = simalgotypes(param=c(5,5),type="gammabd",nsim=50)
 sim = simCPLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=0.05)
 plot(attr(sim,"Lambda"),style="width",adjust=2,main="")
 plot(as.ppp(sim),pch=20, cols="red",add=TRUE)

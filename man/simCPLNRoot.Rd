@@ -76,21 +76,21 @@ used as an intensity in a Poisson process on the linear network.
 \examples{
 # simulation of LGCP with gamma Bernstein density
 pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+simalgo = simalgotypes(param=c(5,5),type="gammabd",nsim=50)
 X = simCPLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=0.1)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # simulation of ICP with inverse gamma Bernstein density
 pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
+simalgo = simalgotypes(param=c(5,5),type="invgammabd",nsim=50)
 X = simCPLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=0.1)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)
 
 # simulation of PCPP with generalized inverse Gaussian Bernstein density
 pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
+simalgo = simalgotypes(param=c(5,5,5),type="gigbd",nsim=50)
 X = simCPLNRoot(pos,simalgo,transform="pcpp",h=1,rho=0.1)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 points(X,cex=0.5)

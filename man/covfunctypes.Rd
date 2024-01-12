@@ -7,8 +7,8 @@
 covfunctypes(type, par = NULL)
 }
 \arguments{
-\item{type}{The types implemented are "expcov", "gamma", "invgamma"
-or "gig"; see the details below.}
+\item{type}{The types implemented are "expcov", "gammabd", "invgammabd"
+or "gigbd"; see the details below.}
 
 \item{par}{if par=NULL (the default behavior), the parameters
 can be specified later; otherwise this should be a vector containing
@@ -34,15 +34,15 @@ implemented covariance functions are:
 with a scale parameter s>0. Set type="expcov" and par=c(s).
 \item Covariance function with gamma Bernstein CDF:
 c0(r) = (1+r/phi)^(-tau), with shape parameter tau and rate
-parameter phi. Set type="gamma" and par = c(tau,phi).
+parameter phi. Set type="gammabd" and par = c(tau,phi).
 \item Covariance function with inverse gamma Bernstein CDF:
 c0(r) = 2(r phi)^(tau/2)K_tau(2 sqrt(r phi)/(Gamma(tau)),
 with shape parameter tau and scale
-parameter phi. Set type="invgamma" and par = c(tau,phi).
+parameter phi. Set type="invgammabd" and par = c(tau,phi).
 \item Covariance function with generalized inverse Gaussian Bernstein
 CDF: c0(r) = (1+2r/psi)^(-lambda/2)(K_lambda(sqrt((2r+psi)chi))/
 (K_lambda(sqrt(psi chi))
-with parameters (chi,psi,lambda); set type="gig" and
+with parameters (chi,psi,lambda); set type="gigbd" and
 par = c(chi,psi,lambda).
 }
 }
@@ -56,15 +56,15 @@ c0 = covfunctypes("expcov")
 curve(c0(1,x),from=0,to=5)  # scale=1 specified here
 
 # Covariance function with gamma Bernstein CDF
-c0 = covfunctypes("gamma",par=c(1,0.5))  # tau=1 and phi=0.5
+c0 = covfunctypes("gammabd",par=c(1,0.5))  # tau=1 and phi=0.5
 curve(c0(x),from=0,to=5)
 
 # Covariance function with inverse gamma Bernstein CDF
-c0 = covfunctypes("invgamma",par=c(1,2))  # tau=1 and phi=2
+c0 = covfunctypes("invgammabd",par=c(1,2))  # tau=1 and phi=2
 curve(c0(x),from=0,to=5)
 
 # Covariance function with generalized inverse Gaussian Bernstein CDF
-c0 = covfunctypes("gig",par=c(1,1,1))  # (chi,psi,lambda) = (1,1,1)
+c0 = covfunctypes("gigbd",par=c(1,1,1))  # (chi,psi,lambda) = (1,1,1)
 curve(c0(x),from=0,to=5)
 }
 \seealso{

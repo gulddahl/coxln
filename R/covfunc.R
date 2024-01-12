@@ -16,19 +16,19 @@
 #' with a scale parameter s>0. Set type="expcov" and par=c(s).
 #' * Covariance function with gamma Bernstein CDF:
 #' c0(r) = (1+r/phi)^(-tau), with shape parameter tau and rate
-#' parameter phi. Set type="gamma" and par = c(tau,phi).
+#' parameter phi. Set type="gammabd" and par = c(tau,phi).
 #' * Covariance function with inverse gamma Bernstein CDF:
 #' c0(r) = 2(r phi)^(tau/2)K_tau(2 sqrt(r phi)/(Gamma(tau)),
 #' with shape parameter tau and scale
-#' parameter phi. Set type="invgamma" and par = c(tau,phi).
+#' parameter phi. Set type="invgammabd" and par = c(tau,phi).
 #' * Covariance function with generalized inverse Gaussian Bernstein
 #' CDF: c0(r) = (1+2r/psi)^(-lambda/2)(K_lambda(sqrt((2r+psi)chi))/
 #' (K_lambda(sqrt(psi chi))
-#' with parameters (chi,psi,lambda); set type="gig" and
+#' with parameters (chi,psi,lambda); set type="gigbd" and
 #' par = c(chi,psi,lambda).
 
-#' @param type The types implemented are "expcov", "gamma", "invgamma"
-#' or "gig"; see the details below.
+#' @param type The types implemented are "expcov", "gammabd", "invgammabd"
+#' or "gigbd"; see the details below.
 #' @param par if par=NULL (the default behavior), the parameters
 #' can be specified later; otherwise this should be a vector containing
 #' the correct number of parameters; see the details below.
@@ -51,24 +51,24 @@
 #' curve(c0(1,x),from=0,to=5)  # scale=1 specified here
 #'
 #' # Covariance function with gamma Bernstein CDF
-#' c0 = covfunctypes("gamma",par=c(1,0.5))  # tau=1 and phi=0.5
+#' c0 = covfunctypes("gammabd",par=c(1,0.5))  # tau=1 and phi=0.5
 #' curve(c0(x),from=0,to=5)
 #'
 #' # Covariance function with inverse gamma Bernstein CDF
-#' c0 = covfunctypes("invgamma",par=c(1,2))  # tau=1 and phi=2
+#' c0 = covfunctypes("invgammabd",par=c(1,2))  # tau=1 and phi=2
 #' curve(c0(x),from=0,to=5)
 #'
 #' # Covariance function with generalized inverse Gaussian Bernstein CDF
-#' c0 = covfunctypes("gig",par=c(1,1,1))  # (chi,psi,lambda) = (1,1,1)
+#' c0 = covfunctypes("gigbd",par=c(1,1,1))  # (chi,psi,lambda) = (1,1,1)
 #' curve(c0(x),from=0,to=5)
 
 #' @export
 
 covfunctypes = function(type,par=NULL){
   if (type=="expcov") covfunc = function(par,r) exp(-par[1]*r)
-  else if (type=="gamma") covfunc = function(par,r) (1+r/par[2])^(-par[1])
-  else if (type=="invgamma") covfunc = function(par,r) ifelse(r>0,2*par[2]^par[1]/gamma(par[1])*(r/par[2])^(par[1]/2)*besselK(2*sqrt(r*par[2]),par[1]),1)
-  else if (type=="gig") covfunc = function(par,r) (1+2*r/par[2])^(-par[3]/2)*besselK(sqrt((2*r+par[2])*par[1]),par[3])/besselK(sqrt(par[2]*par[1]),par[3])
+  else if (type=="gammabd") covfunc = function(par,r) (1+r/par[2])^(-par[1])
+  else if (type=="invgammabd") covfunc = function(par,r) ifelse(r>0,2*par[2]^par[1]/gamma(par[1])*(r/par[2])^(par[1]/2)*besselK(2*sqrt(r*par[2]),par[1]),1)
+  else if (type=="gigbd") covfunc = function(par,r) (1+2*r/par[2])^(-par[3]/2)*besselK(sqrt((2*r+par[2])*par[1]),par[3])/besselK(sqrt(par[2]*par[1]),par[3])
   else stop("unknown type of covariance function")
   if (!is.null(par)) {
     covfunc2 = function(r) covfunc(par,r)
@@ -103,7 +103,7 @@ covfunctypes = function(type,par=NULL){
 #' function.
 
 #' @param covtype The type of covariance function used;
-#' currently available: "expcov", "gamma", "invgamma" and "gig";
+#' currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
 #' see details under the function covfunctypes.
 #' @param transform The type of point process used; "lgcp" for
 #' log Gaussian Cox process, "icp" for interrupted Cox process, and
@@ -122,12 +122,12 @@ covfunctypes = function(type,par=NULL){
 #' curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 #'
 #' # pcf for ICP with gamma Bernstein CDF
-#' pcf = paircorfunc("gamma","icp")
+#' pcf = paircorfunc("gammabd","icp")
 #' parameters = c(sigma=1,h=1,tau=1,phi=1)
 #' curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 #'
 #' # pcf for PCPP with inverse gamma Bernstein CDF
-#' pcf = paircorfunc("invgamma","pcpp")
+#' pcf = paircorfunc("invgammabd","pcpp")
 #' parameters = c(h=1,tau=1,phi=1)
 #' curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 
@@ -156,16 +156,16 @@ paircorfunc = function(covtype,transform){
 #' field with the corresponding covariance function. The currently implemented
 #' types are:
 #' * Gamma Bernstein density: gamma distribution with shape parameter tau and rate
-#' parameter phi. Set type="gamma" and param = c(tau,phi).
+#' parameter phi. Set type="gammabd" and param = c(tau,phi).
 #' * Inverse Gamma Bernstein density: Inverse gamma distribution with shape
-#' parameter tau and scale parameter phi. Set type="invgamma" and param = c(tau,phi).
+#' parameter tau and scale parameter phi. Set type="invgammabd" and param = c(tau,phi).
 #' * Generalized inverse Gaussian Bernstein density: Generalized inverse Gaussian
-#' distribution with with parameters (chi,psi,lambda). Set type="gig" and
+#' distribution with with parameters (chi,psi,lambda). Set type="gigbd" and
 #' param = c(chi,psi,lambda).
 
 #' @param param Parameter vector used in the Bernstein distribution.
-#' @param type The type of Bernstein distribution. Can be "gamma",
-#' "invgamma", and "gig". See details.
+#' @param type The type of Bernstein distribution. Can be "gammabd",
+#' "invgammabd", and "gigbd". See details.
 #' @param nsim The number of simulations.
 #' @returns A vector of length nsim with the simulated values.
 
@@ -176,21 +176,21 @@ paircorfunc = function(covtype,transform){
 
 #' @examples
 #' # simulation of gamma Bernstein distribution
-#' simalgotypes(param=c(1,1),type="gamma",nsim=10)
+#' simalgotypes(param=c(1,1),type="gammabd",nsim=10)
 #'
 #' # simulation of inverse gamma Bernstein distribution
-#' simalgotypes(param=c(1,1),type="invgamma",nsim=10)
+#' simalgotypes(param=c(1,1),type="invgammabd",nsim=10)
 #'
 #' # simulation of generalized inverse Gaussian Bernstein distribution
-#' simalgotypes(param=c(1,1,1),type="gig",nsim=10)
+#' simalgotypes(param=c(1,1,1),type="gigbd",nsim=10)
 #'
 
 #' @export
 
 simalgotypes = function(param,type,nsim){
-  if (type=="gamma") simalgo = rgamma(nsim,param[1],rate=param[2])
-  else if (type=="invgamma") simalgo = 1/rgamma(nsim,param[1],rate=param[2])
-  else if (type=="gig") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
+  if (type=="gammabd") simalgo = rgamma(nsim,param[1],rate=param[2])
+  else if (type=="invgammabd") simalgo = 1/rgamma(nsim,param[1],rate=param[2])
+  else if (type=="gigbd") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
   else stop("unknown type of covariance function")
   return(simalgo)
 }
@@ -205,7 +205,7 @@ simalgotypes = function(param,type,nsim){
 #' parameter vector of the pair correlation function.
 
 #' @param covtype The type of covariance function used;
-#' currently available: "expcov", "gamma", "invgamma" and "gig";
+#' currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
 #' see details under the function covfunctypes.
 #' @param transform The type of point process used; "lgcp" for
 #' log Gaussian Cox process, "icp" for interrupted Cox process, and
@@ -221,18 +221,18 @@ simalgotypes = function(param,type,nsim){
 #' parnamespcf("expcov","lgcp")
 #'
 #' # parameters in pcf for ICP with gamma covariance function
-#' parnamespcf("gamma","icp")
+#' parnamespcf("gammabd","icp")
 #'
 #' # parameters in covariance function with generalized inverse Gaussian as Bernstein distribution
-#' parnamespcf("gig")
+#' parnamespcf("gigbd")
 
 #' @export
 
 parnamespcf = function(covtype,transform="none"){
   if (covtype=="expcov") parnames = "s"
-  else if (covtype=="gamma") parnames = c("tau","phi")
-  else if (covtype=="invgamma") parnames = c("tau","phi")
-  else if (covtype=="gig") parnames = c("chi","psi","lambda")
+  else if (covtype=="gammabd") parnames = c("tau","phi")
+  else if (covtype=="invgammabd") parnames = c("tau","phi")
+  else if (covtype=="gigbd") parnames = c("chi","psi","lambda")
   else stop("Unknown type of covariance function")
   if (transform=="lgcp") parnames = c("sigma",parnames)
   else if (transform=="icp") parnames = c("sigma","h",parnames)

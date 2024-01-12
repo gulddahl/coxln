@@ -9,8 +9,8 @@ simalgotypes(param, type, nsim)
 \arguments{
 \item{param}{Parameter vector used in the Bernstein distribution.}
 
-\item{type}{The type of Bernstein distribution. Can be "gamma",
-"invgamma", and "gig". See details.}
+\item{type}{The type of Bernstein distribution. Can be "gammabd",
+"invgammabd", and "gigbd". See details.}
 
 \item{nsim}{The number of simulations.}
 }
@@ -30,23 +30,23 @@ field with the corresponding covariance function. The currently implemented
 types are:
 \itemize{
 \item Gamma Bernstein density: gamma distribution with shape parameter tau and rate
-parameter phi. Set type="gamma" and param = c(tau,phi).
+parameter phi. Set type="gammabd" and param = c(tau,phi).
 \item Inverse Gamma Bernstein density: Inverse gamma distribution with shape
-parameter tau and scale parameter phi. Set type="invgamma" and param = c(tau,phi).
+parameter tau and scale parameter phi. Set type="invgammabd" and param = c(tau,phi).
 \item Generalized inverse Gaussian Bernstein density: Generalized inverse Gaussian
-distribution with with parameters (chi,psi,lambda). Set type="gig" and
+distribution with with parameters (chi,psi,lambda). Set type="gigbd" and
 param = c(chi,psi,lambda).
 }
 }
 \examples{
 # simulation of gamma Bernstein distribution
-simalgotypes(param=c(1,1),type="gamma",nsim=10)
+simalgotypes(param=c(1,1),type="gammabd",nsim=10)
 
 # simulation of inverse gamma Bernstein distribution
-simalgotypes(param=c(1,1),type="invgamma",nsim=10)
+simalgotypes(param=c(1,1),type="invgammabd",nsim=10)
 
 # simulation of generalized inverse Gaussian Bernstein distribution
-simalgotypes(param=c(1,1,1),type="gig",nsim=10)
+simalgotypes(param=c(1,1,1),type="gigbd",nsim=10)
 
 }
 \seealso{

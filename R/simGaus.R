@@ -47,7 +47,7 @@
 #'
 #' # Gaussian process with covariance function with gamma Bernstein CDF
 #' pos = makepos(simplenet,50)
-#' covfunc = covfunctypes("gamma",c(1,1))
+#' covfunc = covfunctypes("gammabd",c(1,1))
 #' X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 #' plot(X)
 #'
@@ -349,25 +349,25 @@ simGausExpLNRoot = function(pos,s,mu=0,sigma=1,transform="none",h=1,rho=1,orderV
 #' @examples
 #' # Gaussian process on network with gamma Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5),type="gammabd",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,mu=0,sigma=1,transform="none")
 #' plot(X)
 #'
 #' # simulation of intensity for LGCP with gamma Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5),type="gammabd",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for ICP with inverse gamma Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5),type="invgammabd",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=1)
 #' plot(X)
 #'
 #' # simulation of intensity for PCPP with generalized inverse Gaussian Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5,5),type="gigbd",nsim=50)
 #' X = simGausLNRoot(pos,simalgo,transform="pcpp",h=1,rho=1)
 #' plot(X)
 

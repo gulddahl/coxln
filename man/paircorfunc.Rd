@@ -8,7 +8,7 @@ paircorfunc(covtype, transform)
 }
 \arguments{
 \item{covtype}{The type of covariance function used;
-currently available: "expcov", "gamma", "invgamma" and "gig";
+currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
 see details under the function covfunctypes.}
 
 \item{transform}{The type of point process used; "lgcp" for
@@ -50,12 +50,12 @@ parameters = c(sigma=1,s=1)
 curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 
 # pcf for ICP with gamma Bernstein CDF
-pcf = paircorfunc("gamma","icp")
+pcf = paircorfunc("gammabd","icp")
 parameters = c(sigma=1,h=1,tau=1,phi=1)
 curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 
 # pcf for PCPP with inverse gamma Bernstein CDF
-pcf = paircorfunc("invgamma","pcpp")
+pcf = paircorfunc("invgammabd","pcpp")
 parameters = c(h=1,tau=1,phi=1)
 curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 }

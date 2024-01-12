@@ -66,7 +66,7 @@ plot(X)
 
 # Gaussian process with covariance function with gamma Bernstein CDF
 pos = makepos(simplenet,50)
-covfunc = covfunctypes("gamma",c(1,1))
+covfunc = covfunctypes("gammabd",c(1,1))
 X = simGausLNDisc(pos,covfunc,mu=0,sigma=1)
 plot(X)
 

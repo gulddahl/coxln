@@ -61,14 +61,14 @@ plot(X,add=TRUE)
 
 # Interrupted Cox process with gamma Bernstein CDF and resistance metric
 pos = makepos(simplenet,50)
-covfunc = covfunctypes("gamma",c(1,1))
+covfunc = covfunctypes("gammabd",c(1,1))
 X = simCPLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=5)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 plot(X,add=TRUE)
 
 # Permanental Cox point process with inverse gamma Bernstein CDF and resistance metric
 pos = makepos(simplenet,50)
-covfunc = covfunctypes("invgamma",c(1,1))
+covfunc = covfunctypes("invgammabd",c(1,1))
 X = simCPLNDisc(pos,covfunc,transform="pcpp",h=1,rho=5)
 plot(attr(X,"Lambda"),style="width",col="grey",main="")
 plot(X,add=TRUE)

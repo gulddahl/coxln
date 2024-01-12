@@ -43,14 +43,14 @@
 #'
 #' # Interrupted Cox process with gamma Bernstein CDF and resistance metric
 #' pos = makepos(simplenet,50)
-#' covfunc = covfunctypes("gamma",c(1,1))
+#' covfunc = covfunctypes("gammabd",c(1,1))
 #' X = simCPLNDisc(pos,covfunc,sigma=1,transform="icp",h=1,rho=5)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' plot(X,add=TRUE)
 #'
 #' # Permanental Cox point process with inverse gamma Bernstein CDF and resistance metric
 #' pos = makepos(simplenet,50)
-#' covfunc = covfunctypes("invgamma",c(1,1))
+#' covfunc = covfunctypes("invgammabd",c(1,1))
 #' X = simCPLNDisc(pos,covfunc,transform="pcpp",h=1,rho=5)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' plot(X,add=TRUE)
@@ -189,21 +189,21 @@ simCPExpLNRoot = function(pos,s,sigma=1,transform="lgcp",h=1,rho=1,orderV=makeor
 #' @examples
 #' # simulation of LGCP with gamma Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5),type="gamma",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5),type="gammabd",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # simulation of ICP with inverse gamma Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5),type="invgamma",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5),type="invgammabd",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,sigma=1,transform="icp",h=1,rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
 #'
 #' # simulation of PCPP with generalized inverse Gaussian Bernstein density
 #' pos = makepos(as.linnet(dendrite),0.5,duplicate=TRUE)
-#' simalgo = simalgotypes(param=c(5,5,5),type="gig",nsim=50)
+#' simalgo = simalgotypes(param=c(5,5,5),type="gigbd",nsim=50)
 #' X = simCPLNRoot(pos,simalgo,transform="pcpp",h=1,rho=0.1)
 #' plot(attr(X,"Lambda"),style="width",col="grey",main="")
 #' points(X,cex=0.5)
