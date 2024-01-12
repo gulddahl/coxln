@@ -62,5 +62,6 @@ curve(pcf(parameters,x),from=0,to=5,ylab="pcf",xlab="r")
 \seealso{
 \link{covfunctypes} for covariance functions, \link{simGausLNDisc}
 for simulation of GRFs on linear networks
-with a given covariance function
+with a given covariance function, \link{parnamespcf} for names of parameters
+in the pair correlation function
 }

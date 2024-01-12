@@ -38,7 +38,8 @@
 #' @seealso [paircorfunc] for pair correlation functions, [simalgotypes]
 #' for simulation of Bernstein distributions corresponding to covariance
 #' functions, [simGausLNDisc] for simulation of GRFs on linear networks
-#' with a given covariance function
+#' with a given covariance function, [parnamespcf] for names of parameters
+#' in the covariance function (or pair correlation function)
 
 #' @examples
 #' # Exponential covariance function with scale parameter 1
@@ -111,7 +112,8 @@ covfunctypes = function(type,par=NULL){
 
 #' @seealso [covfunctypes] for covariance functions, [simGausLNDisc]
 #' for simulation of GRFs on linear networks
-#' with a given covariance function
+#' with a given covariance function, [parnamespcf] for names of parameters
+#' in the pair correlation function
 
 #' @examples
 #' # pcf for LGCP with exponential covariance function
@@ -191,4 +193,50 @@ simalgotypes = function(param,type,nsim){
   else if (type=="gig") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
   else stop("unknown type of covariance function")
   return(simalgo)
+}
+
+
+#' Output parameter vector of a pair correlation function
+
+#' @description
+#' Since the pair correlation function both gets parameters from the covariance function
+#' and the class of point process used, the number and order of parameters in its
+#' parameter vector can be confusing. This function outputs the names of parameters in the
+#' parameter vector of the pair correlation function.
+
+#' @param covtype The type of covariance function used;
+#' currently available: "expcov", "gamma", "invgamma" and "gig";
+#' see details under the function covfunctypes.
+#' @param transform The type of point process used; "lgcp" for
+#' log Gaussian Cox process, "icp" for interrupted Cox process, and
+#' "pcpp" for permanental Cox process. If transform = "none" only the
+#' parameters in the covariance function is returned.
+#' @returns A vector of strings with the names of the parameters.
+
+#' @seealso [paircorfunc] for pair correlation functions, [covfunctypes]
+#' for covariance functions.
+
+#' @examples
+#' # parameters in pcf for LGCP with exponential covariance function
+#' parnamespcf("expcov","lgcp")
+#'
+#' # parameters in pcf for ICP with gamma covariance function
+#' parnamespcf("gamma","icp")
+#'
+#' # parameters in covariance function with generalized inverse Gaussian as Bernstein distribution
+#' parnamespcf("gig")
+
+#' @export
+
+parnamespcf = function(covtype,transform="none"){
+  if (covtype=="expcov") parnames = "s"
+  else if (covtype=="gamma") parnames = c("tau","phi")
+  else if (covtype=="invgamma") parnames = c("tau","phi")
+  else if (covtype=="gig") parnames = c("chi","psi","lambda")
+  else stop("Unknown type of covariance function")
+  if (transform=="lgcp") parnames = c("sigma",parnames)
+  else if (transform=="icp") parnames = c("sigma","h",parnames)
+  else if (transform=="pcpp") parnames = c("h",parnames)
+  else if (transform!="none") stop("Unknown transform")
+  return(parnames)
 }

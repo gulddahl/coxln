@@ -71,5 +71,6 @@ curve(c0(x),from=0,to=5)
 \link{paircorfunc} for pair correlation functions, \link{simalgotypes}
 for simulation of Bernstein distributions corresponding to covariance
 functions, \link{simGausLNDisc} for simulation of GRFs on linear networks
-with a given covariance function
+with a given covariance function, \link{parnamespcf} for names of parameters
+in the covariance function (or pair correlation function)
 }

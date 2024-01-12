@@ -184,7 +184,11 @@ The covariance function is now given by
 c(r) = (1+r/\phi)^{-\tau}
 \]
 where parameters are now given by a shape parameter tau and a rate parameter phi. 
-The parameter vector that g depends on is always given by a vector containing first the parameters from the chosen Cox process and second the chosen covariance function. For example for an LGCP model with type="gamma", the parameter vector of the pair correlation function is given by $(\sigma,\tau,\phi)$, or for an similar ICP model it is given by $(\sigma,h,\tau,\phi)$. When estimating the parameters by using the mincontrast function, the startpar input should always be a vector of the same length as the parameter vector
+The parameter vector that g depends on is always given by a vector containing first the parameters from the chosen Cox process and second the chosen covariance function. For example for an LGCP model with type="gamma", the parameter vector of the pair correlation function is given by $(\sigma,\tau,\phi)$, or for an similar ICP model it is given by $(\sigma,h,\tau,\phi)$. When estimating the parameters by using the mincontrast function, the startpar input should always be a vector of the same length as the parameter vector. In case that there is confusing about the parameters and their order, the following function outputs the vector of parameter names for a given combination of covariance function and point process:
+
+```{r}
+parnamespcf("gamma","lgcp")
+```
 
 Note that all the models also have the intensity parameter $\rho$, which never appears in the pair correlation function. Therefore this never enters the minimum contrast estimation procedure, but is estimated as in the previous analysis.
 
