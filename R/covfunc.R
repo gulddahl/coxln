@@ -65,12 +65,13 @@
 #' @export
 
 covfunctypes = function(type,par=NULL){
-  if (type=="expcov") covfunc = function(par,r) exp(-par[1]*r)
+  if (type=="expcov") covfunc = function(par,r)exp(-par[1]*r)
   else if (type=="gammabd") covfunc = function(par,r) (1+r/par[2])^(-par[1])
   else if (type=="invgammabd") covfunc = function(par,r) ifelse(r>0,2*par[2]^par[1]/gamma(par[1])*(r/par[2])^(par[1]/2)*besselK(2*sqrt(r*par[2]),par[1]),1)
   else if (type=="gigbd") covfunc = function(par,r) (1+2*r/par[2])^(-par[3]/2)*besselK(sqrt((2*r+par[2])*par[1]),par[3])/besselK(sqrt(par[2]*par[1]),par[3])
   else stop("unknown type of covariance function")
   if (!is.null(par)) {
+    if (length(parnamespcf(type,transform="none"))!=length(par)) stop(paste("Wrong number of entries in par:", length(par), "- should be", length(parnamespcf(type,transform="none"))))
     covfunc2 = function(r) covfunc(par,r)
     return(covfunc2)
   } else return(covfunc)
@@ -135,9 +136,23 @@ covfunctypes = function(type,par=NULL){
 
 paircorfunc = function(covtype,transform){
   covfunc = covfunctypes(covtype)
-  if (transform=="lgcp") g = function(par,r) exp(par[1]^2*covfunc(par[-1],r))
-  if (transform=="icp") g = function(par,r) ((1+par[1]^2)^2/((1+par[1]^2)^2-par[1]^(2*2)*covfunc(par[-c(1:2)],r)^2))^(par[2]/2)
-  if (transform=="pcpp") g = function(par,r) 1+covfunc(par[-1],r)^2/(par[1]/2)
+  numpar = length(parnamespcf(covtype,transform))
+  if (transform=="lgcp")
+    g = function(par,r){
+      if (numpar!=length(par)) stop(paste("Wrong number of entries in par:", length(par), "- should be", numpar))
+      exp(par[1]^2*covfunc(par[-1],r))
+    }
+  else if (transform=="icp")
+    g = function(par,r){
+      if (numpar!=length(par)) stop(paste("Wrong number of entries in par:", length(par), "- should be", numpar))
+      ((1+par[1]^2)^2/((1+par[1]^2)^2-par[1]^(2*2)*covfunc(par[-c(1:2)],r)^2))^(par[2]/2)
+    }
+  else if (transform=="pcpp")
+    g = function(par,r){
+      if (numpar!=length(par)) stop(paste("Wrong number of entries in par:", length(par), "- should be", numpar))
+      1+covfunc(par[-1],r)^2/(par[1]/2)
+    }
+  else stop("Unknown transform")
   return(g)
 }
 
@@ -188,6 +203,7 @@ paircorfunc = function(covtype,transform){
 #' @export
 
 simalgotypes = function(param,type,nsim){
+  if (length(parnamespcf(type,transform="none"))!=length(param)) stop(paste("Wrong number of entries in param:", length(param), "- should be", length(parnamespcf(type,transform="none"))))
   if (type=="gammabd") simalgo = rgamma(nsim,param[1],rate=param[2])
   else if (type=="invgammabd") simalgo = 1/rgamma(nsim,param[1],rate=param[2])
   else if (type=="gigbd") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
