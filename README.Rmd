@@ -72,7 +72,7 @@ plot(gest,legend=FALSE,xlim=c(100,300),ylim=c(0.5,1.5))
 curve(g(param,x),col="green",add=TRUE)
 ```
 
-The estimated parameters are now stored in param, which in this case is given by (sigma,s) = (`r round(param,4)`), i.e. the standard deviation of the underlying Gaussian random field and the scaling parameter of the exponential covariance function.
+The estimated parameters are now stored in param, which in this case is given by (sigma,s) = (`r round(param,4)`), i.e. the standard deviation of the underlying Gaussian random field and the scaling parameter of the exponential covariance function. 
 
 # Vignette
 

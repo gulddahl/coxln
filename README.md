@@ -38,6 +38,23 @@ network.
 
 ``` r
 library(coxln)
+#> Loading required package: spatstat
+#> Loading required package: spatstat.data
+#> Loading required package: spatstat.geom
+#> spatstat.geom 3.2-7
+#> Loading required package: spatstat.random
+#> spatstat.random 3.2-2
+#> Loading required package: spatstat.explore
+#> Loading required package: nlme
+#> spatstat.explore 3.2-5
+#> Loading required package: spatstat.model
+#> Loading required package: rpart
+#> spatstat.model 3.2-8
+#> Loading required package: spatstat.linnet
+#> spatstat.linnet 3.1-3
+#> 
+#> spatstat 3.0-7 
+#> For an introduction to spatstat, type 'beginner'
 pos = makepos(spatstat.data::simplenet,50)
 covfunc = covfunctypes("expcov",1)
 X = simCPLNDisc(pos,covfunc,sigma=1,transform="lgcp",rho=20)
