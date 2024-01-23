@@ -167,11 +167,63 @@ The estimation then proceeds as before using gh instead of g. The simulation alg
 
 Here "lgcp" should be exchanged with "pcpp". In this model the parameter $h$ is also included, but $\sigma$ is not. Here it may be relevant to use several fixed values of $h$ and compare the fitted models to see which one fits the data best. Otherwise everything proceeds as before.
 
-# Other covariance functions
+# Covariance functions
 
-Other covariance functions than the exponential can also be used. Currently three cases are implemented, all of which are defined by the corresponding Bernstein distribution.
+Other covariance functions than the exponential can also be used.
 
-## Covariance function with gamma Bernstein distribution
+## Currently implemented covariance functions
+
+The below covariance functions are currently implemented in the package. Note that all
+the covariance functions with type ending in bd are specified by their Bernstein distribution.
+
+- Exponential covariance function: 
+\[
+c(r) = \exp(-sr)
+\]
+with a scale parameter $s$. Use type="expcov" and par=c(s).
+- Powered exponential covariance function: 
+\[
+c(r) = \exp(-\beta r^\alpha)
+\]
+with parameters $(\alpha,\beta)$. Use type="powexpcov" and par=c(alpha,beta).
+- Matern covariance function: 
+\[
+c(r) = \frac{2^{1-\alpha}}{\Gamma(\alpha)}(\beta r)^\alpha K_\alpha(\beta r)
+\]
+with parameters $(\alpha,\beta)$. Use type="materncov" and par=c(alpha,beta).
+- Generalized Cauchy covariance function: 
+\[
+c(r) = (\beta r^\alpha+1)^{-\xi/\alpha}
+\]
+with parameters $(\alpha,\beta,\xi)$. Use type="gencaucov" and par=c(alpha,beta,xi).
+- Dagum covariance function: 
+\[
+c(r) = 1-\left(\frac{\beta r^\alpha}{1+\beta r^\alpha}\right)^{\xi/\alpha}
+\]
+with parameters $(\alpha,\beta,\xi)$. Use
+type="dagumcov" and par=c(alpha,beta,xi).
+- Covariance function with gamma Bernstein distribution:
+\[
+c(r) = (1+r/\phi)^{-\tau}
+\]
+with shape parameter $\tau$ and rate
+parameter $\phi$. Use type="gammabd" and par = c(tau,phi).
+- Covariance function with inverse gamma Bernstein distribution:
+\[
+c(r) = 2(r \phi)^{\tau/2}K_\tau\left( \frac{2\sqrt{r \phi}}{\Gamma(\tau)}\right)
+\]
+with shape parameter $\tau$ and scale
+parameter $\phi$. Use type="invgammabd" and par = c(tau,phi).
+- Covariance function with generalized inverse Gaussian Bernstein
+distribution: 
+\[
+c(r) = (1+2r/\psi)^{-\lambda/2}\frac{K_\lambda(\sqrt{(2r+\psi)\chi})}
+{K_\lambda(\sqrt{\psi \chi})}
+\]
+with parameters $(\chi,\psi,\lambda)$. Use type="gigbd" and
+par = c(chi,psi,lambda).
+
+## An example: Covariance function with gamma Bernstein distribution
 
 Here we use type="gammabd" in the definition of the covariance function, i.e. we write the following to get a pair correlation function for a LGCP with gamma Bernstein distribution:
 
@@ -183,7 +235,7 @@ The covariance function is now given by
 \[
 c(r) = (1+r/\phi)^{-\tau}
 \]
-where parameters are now given by a shape parameter tau and a rate parameter phi. 
+where parameters are now given by a shape parameter $\tau$ and a rate parameter $\phi$. 
 The parameter vector that g depends on is always given by a vector containing first the parameters from the chosen Cox process and second the chosen covariance function. For example for an LGCP model with type="gammabd", the parameter vector of the pair correlation function is given by $(\sigma,\tau,\phi)$, or for an similar ICP model it is given by $(\sigma,h,\tau,\phi)$. When estimating the parameters by using the mincontrast function, the startpar input should always be a vector of the same length as the parameter vector. In case that there is confusing about the parameters and their order, the following function outputs the vector of parameter names for a given combination of covariance function and point process:
 
 ```{r}
@@ -192,24 +244,9 @@ parnamespcf("gammabd","lgcp")
 
 Note that all the models also have the intensity parameter $\rho$, which never appears in the pair correlation function. Therefore this never enters the minimum contrast estimation procedure, but is estimated as in the previous analysis.
 
-## Covariance function with inverse gamma Bernstein distribution
-
-Here we use type="invgammabd" to get the covariance function given by
-\[
-c(r) = 2(r \phi)^{\tau/2}K_\tau(2 \sqrt{r \phi}/(\Gamma(\tau))
-\]
-with shape parameter tau and scale parameter phi.
-
-## Covariance function with generalized inverse Gaussian Bernstein distribution
-
-Here we use type="gigbd":
-\[
-c(r) = (1+2r/\psi)^{-\lambda/2}\frac{K_\lambda(\sqrt{(2r+\psi)\chi})}{K_\lambda(\sqrt{\psi \chi})}
-\] with parameter vector $(\chi,\psi,\lambda)$.
-
 ## A warning about non-exponential covariance functions
 
-Non-exponential covariance functions work fine in the simulation algorithms, but the minimum contrast estimation does not work well. For all three choices of non-exponential covariance functions, the resulting parameter estimates usually gives something very close to an exponential covariance function, even when estimation is applied to simulated data using a clearly non-exponential covariance function. This is currently an unsolved problem. 
+Non-exponential covariance functions work fine in the simulation algorithms, but the minimum contrast estimation may not work well. For all three choices of non-exponential covariance functions with known Bernstein distribution, it has been observed that the resulting parameter estimates usually gives something very close to an exponential covariance function, even when estimation is applied to simulated data using a clearly non-exponential covariance function. This is currently an unsolved problem. 
 
 # Tree-shaped linear networks
 
@@ -225,7 +262,7 @@ plot(as.ppp(sim),pch=20, cols="red",add=TRUE)
 
 Note that for technical reasons makepos needs the argument duplicates=TRUE in order for this algorithm to work.
 
-For non-exponential covariance functions there is also another algorithm for trees, but this is only approximate, and whether or not it is faster than the algorithm used in the analysis above depends on the number of simulations used in the approximation and the number of points in the grid (for a sufficiently high number of grid points, the below algorithm becomes the fastest). For example, the algorithm in the case of an LGCP with a covariance function with a gamma Bernstein distribution is given by the following:
+For non-exponential covariance functions with known Bernstein distribution, there is also another algorithm for trees, but this is only approximate, and whether or not it is faster than the algorithm used in the analysis above depends on the number of simulations used in the approximation and the number of points in the grid (for a sufficiently high number of grid points, the below algorithm becomes the fastest). For example, the algorithm in the case of an LGCP with a covariance function with a gamma Bernstein distribution is given by the following:
 
 ```{r fig.width=5,fig.height=5,fig.align='center'}
 L = as.linnet(dendrite)
@@ -235,3 +272,5 @@ sim = simCPLNRoot(pos,simalgo,sigma=1,transform="lgcp",rho=0.05)
 plot(attr(sim,"Lambda"),style="width",adjust=2,main="")
 plot(as.ppp(sim),pch=20, cols="red",add=TRUE)
 ```
+
+For the covariance functions without known Bernstein distribution, there is no faster algorithm, since this algorithm depends on simulating the Bernstein distribution.

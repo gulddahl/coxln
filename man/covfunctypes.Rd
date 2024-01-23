@@ -7,8 +7,9 @@
 covfunctypes(type, par = NULL)
 }
 \arguments{
-\item{type}{The types implemented are "expcov", "gammabd", "invgammabd"
-or "gigbd"; see the details below.}
+\item{type}{The types implemented are "expcov", "powexpcov",
+"materncov", "gencaucov", "dagumcov",
+"gammabd", "invgammabd" and "gigbd"; see the details below.}
 
 \item{par}{if par=NULL (the default behavior), the parameters
 can be specified later; otherwise this should be a vector containing
@@ -31,18 +32,29 @@ of entries for the chosen covariance function. The currently
 implemented covariance functions are:
 \itemize{
 \item Exponential covariance function: c0(r) = exp(-sr),
-with a scale parameter s>0. Set type="expcov" and par=c(s).
+with a scale parameter s>0. Use type="expcov" and par=c(s).
+\item Powered exponential covariance function: c0(r) = exp(-beta r^alpha),
+with parameters (alpha,beta). Use type="powexpcov"
+and par=c(alpha,beta).
+\item Matern covariance function: c0(r) = 2^(1-alpha)/Gamma(alpha)(beta r)^alpha K_alpha(beta r),
+with parameters (alpha,beta). Use type="materncov" and par=c(alpha,beta).
+\item Generalized Cauchy covariance function: c0(r) = (beta r^alpha+1)^(-xi/alpha),
+with parameters (alpha,beta,xi). Use
+type="gencaucov" and par=c(alpha,beta,xi).
+\item Dagum covariance function: c0(r) = 1-((beta r^alpha)/(1+beta r^alpha))^(xi/alpha),
+with parameters (alpha,beta,xi). Use
+type="dagumcov" and par=c(alpha,beta,xi).
 \item Covariance function with gamma Bernstein CDF:
 c0(r) = (1+r/phi)^(-tau), with shape parameter tau and rate
-parameter phi. Set type="gammabd" and par = c(tau,phi).
+parameter phi. Use type="gammabd" and par = c(tau,phi).
 \item Covariance function with inverse gamma Bernstein CDF:
 c0(r) = 2(r phi)^(tau/2)K_tau(2 sqrt(r phi)/(Gamma(tau)),
 with shape parameter tau and scale
-parameter phi. Set type="invgammabd" and par = c(tau,phi).
+parameter phi. Use type="invgammabd" and par = c(tau,phi).
 \item Covariance function with generalized inverse Gaussian Bernstein
 CDF: c0(r) = (1+2r/psi)^(-lambda/2)(K_lambda(sqrt((2r+psi)chi))/
 (K_lambda(sqrt(psi chi))
-with parameters (chi,psi,lambda); set type="gigbd" and
+with parameters (chi,psi,lambda). Use type="gigbd" and
 par = c(chi,psi,lambda).
 }
 }
@@ -54,6 +66,22 @@ curve(c0(x),from=0,to=5)
 # Exponential covariance function with unspecified parameter
 c0 = covfunctypes("expcov")
 curve(c0(1,x),from=0,to=5)  # scale=1 specified here
+
+# Powered exponential covariance function
+c0 = covfunctypes("powexpcov",par=c(1,2))  # alpha=1 and beta=2
+curve(c0(x),from=0,to=5)
+
+# Matern covariance function
+c0 = covfunctypes("materncov",par=c(0.25,1))  # alpha=0.25 and beta=1
+curve(c0(x),from=0,to=5)
+
+# Generalized Cauchy covariance function
+c0 = covfunctypes("gencaucov",par=c(0.5,1,2))  # (alpha,beta,xi)=(0.5,1,2)
+curve(c0(x),from=0,to=5)
+
+# Dagum covariance function
+c0 = covfunctypes("dagumcov",par=c(0.5,1,1))  # (alpha,beta,xi)=(0.5,1,1)
+curve(c0(x),from=0,to=5)
 
 # Covariance function with gamma Bernstein CDF
 c0 = covfunctypes("gammabd",par=c(1,0.5))  # tau=1 and phi=0.5

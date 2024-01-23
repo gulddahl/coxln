@@ -13,22 +13,34 @@
 #' implemented covariance functions are:
 #'
 #' * Exponential covariance function: c0(r) = exp(-sr),
-#' with a scale parameter s>0. Set type="expcov" and par=c(s).
+#' with a scale parameter s>0. Use type="expcov" and par=c(s).
+#' * Powered exponential covariance function: c0(r) = exp(-beta r^alpha),
+#' with parameters (alpha,beta). Use type="powexpcov"
+#' and par=c(alpha,beta).
+#' * Matern covariance function: c0(r) = 2^(1-alpha)/Gamma(alpha)(beta r)^alpha K_alpha(beta r),
+#' with parameters (alpha,beta). Use type="materncov" and par=c(alpha,beta).
+#' * Generalized Cauchy covariance function: c0(r) = (beta r^alpha+1)^(-xi/alpha),
+#' with parameters (alpha,beta,xi). Use
+#'  type="gencaucov" and par=c(alpha,beta,xi).
+#' * Dagum covariance function: c0(r) = 1-((beta r^alpha)/(1+beta r^alpha))^(xi/alpha),
+#' with parameters (alpha,beta,xi). Use
+#' type="dagumcov" and par=c(alpha,beta,xi).
 #' * Covariance function with gamma Bernstein CDF:
 #' c0(r) = (1+r/phi)^(-tau), with shape parameter tau and rate
-#' parameter phi. Set type="gammabd" and par = c(tau,phi).
+#' parameter phi. Use type="gammabd" and par = c(tau,phi).
 #' * Covariance function with inverse gamma Bernstein CDF:
 #' c0(r) = 2(r phi)^(tau/2)K_tau(2 sqrt(r phi)/(Gamma(tau)),
 #' with shape parameter tau and scale
-#' parameter phi. Set type="invgammabd" and par = c(tau,phi).
+#' parameter phi. Use type="invgammabd" and par = c(tau,phi).
 #' * Covariance function with generalized inverse Gaussian Bernstein
 #' CDF: c0(r) = (1+2r/psi)^(-lambda/2)(K_lambda(sqrt((2r+psi)chi))/
 #' (K_lambda(sqrt(psi chi))
-#' with parameters (chi,psi,lambda); set type="gigbd" and
+#' with parameters (chi,psi,lambda). Use type="gigbd" and
 #' par = c(chi,psi,lambda).
 
-#' @param type The types implemented are "expcov", "gammabd", "invgammabd"
-#' or "gigbd"; see the details below.
+#' @param type The types implemented are "expcov", "powexpcov",
+#' "materncov", "gencaucov", "dagumcov",
+#' "gammabd", "invgammabd" and "gigbd"; see the details below.
 #' @param par if par=NULL (the default behavior), the parameters
 #' can be specified later; otherwise this should be a vector containing
 #' the correct number of parameters; see the details below.
@@ -50,6 +62,22 @@
 #' c0 = covfunctypes("expcov")
 #' curve(c0(1,x),from=0,to=5)  # scale=1 specified here
 #'
+#' # Powered exponential covariance function
+#' c0 = covfunctypes("powexpcov",par=c(1,2))  # alpha=1 and beta=2
+#' curve(c0(x),from=0,to=5)
+#'
+#' # Matern covariance function
+#' c0 = covfunctypes("materncov",par=c(0.25,1))  # alpha=0.25 and beta=1
+#' curve(c0(x),from=0,to=5)
+#'
+#' # Generalized Cauchy covariance function
+#' c0 = covfunctypes("gencaucov",par=c(0.5,1,2))  # (alpha,beta,xi)=(0.5,1,2)
+#' curve(c0(x),from=0,to=5)
+#'
+#' # Dagum covariance function
+#' c0 = covfunctypes("dagumcov",par=c(0.5,1,1))  # (alpha,beta,xi)=(0.5,1,1)
+#' curve(c0(x),from=0,to=5)
+#'
 #' # Covariance function with gamma Bernstein CDF
 #' c0 = covfunctypes("gammabd",par=c(1,0.5))  # tau=1 and phi=0.5
 #' curve(c0(x),from=0,to=5)
@@ -65,7 +93,11 @@
 #' @export
 
 covfunctypes = function(type,par=NULL){
-  if (type=="expcov") covfunc = function(par,r)exp(-par[1]*r)
+  if (type=="expcov") covfunc = function(par,r) exp(-par[1]*r)
+  else if (type=="powexpcov") covfunc = function(par,r) exp(-par[2]*r^par[1])
+  else if (type=="materncov") covfunc = function(par,r) ifelse(r>0,2^(1-par[1])/gamma(par[1])*(par[2]*r)^par[1]*besselK(par[2]*r,par[1]),1)
+  else if (type=="gencaucov") covfunc = function(par,r) (par[2]*r^par[1]+1)^(-par[3]/par[1])
+  else if (type=="dagumcov") covfunc = function(par,r) 1-((par[2]*r^par[1])/(1+par[2]*r^par[1]))^(par[3]/par[1])
   else if (type=="gammabd") covfunc = function(par,r) (1+r/par[2])^(-par[1])
   else if (type=="invgammabd") covfunc = function(par,r) ifelse(r>0,2*par[2]^par[1]/gamma(par[1])*(r/par[2])^(par[1]/2)*besselK(2*sqrt(r*par[2]),par[1]),1)
   else if (type=="gigbd") covfunc = function(par,r) (1+2*r/par[2])^(-par[3]/2)*besselK(sqrt((2*r+par[2])*par[1]),par[3])/besselK(sqrt(par[2]*par[1]),par[3])
@@ -207,7 +239,8 @@ simalgotypes = function(param,type,nsim){
   if (type=="gammabd") simalgo = rgamma(nsim,param[1],rate=param[2])
   else if (type=="invgammabd") simalgo = 1/rgamma(nsim,param[1],rate=param[2])
   else if (type=="gigbd") simalgo = GeneralizedHyperbolic::rgig(nsim,param=param)
-  else stop("unknown type of covariance function")
+  else if (type=="expcov"|type=="powexpcov"|type=="materncov"|type=="gencaucov"|type=="dagumcov") stop("Only covariance functions with known Bernstein distribution can be used in this algorithm (i.e. those with type names ending with bd).")
+  else stop("Unknown type of covariance function")
   return(simalgo)
 }
 
@@ -221,7 +254,8 @@ simalgotypes = function(param,type,nsim){
 #' parameter vector of the pair correlation function.
 
 #' @param covtype The type of covariance function used;
-#' currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
+#' currently available: "expcov", "powexpcov", "materncov", "gencaucov", "dagumcov",
+#' "gammabd", "invgammabd" and "gigbd";
 #' see details under the function covfunctypes.
 #' @param transform The type of point process used; "lgcp" for
 #' log Gaussian Cox process, "icp" for interrupted Cox process, and
@@ -246,6 +280,10 @@ simalgotypes = function(param,type,nsim){
 
 parnamespcf = function(covtype,transform="none"){
   if (covtype=="expcov") parnames = "s"
+  else if (covtype=="powexpcov") parnames = c("alpha","beta")
+  else if (covtype=="materncov") parnames = c("alpha","beta")
+  else if (covtype=="gencaucov") parnames = c("alpha","beta","xi")
+  else if (covtype=="dagumcov") parnames = c("alpha","beta","xi")
   else if (covtype=="gammabd") parnames = c("tau","phi")
   else if (covtype=="invgammabd") parnames = c("tau","phi")
   else if (covtype=="gigbd") parnames = c("chi","psi","lambda")
