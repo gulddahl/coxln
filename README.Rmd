@@ -39,7 +39,7 @@ devtools::install_github("gulddahl/coxln",dependencies=TRUE,build_vignettes=TRUE
 
 The first example shows how to simulate a log Gaussian Cox process with exponential covariance function and geodesic metric on a linear network called simplenet (from the spatstat package) using a grid on the network.
 
-```{r fig.width=5, fig.height=4}
+```{r message=FALSE, fig.width=5, fig.height=4}
 library(coxln)
 pos = makepos(spatstat.data::simplenet,50)
 covfunc = covfunctypes("expcov",1)
