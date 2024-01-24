@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{coxln: Fitting a log Gaussian Cox process to a point pattern on a linear network}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: REFERENCES.bib
 ---
 
 ```{r, include = FALSE}
@@ -148,9 +149,21 @@ knitr::include_graphics("chicago-FGJglobal-lgcp.pdf")
 
 A warning is in order: Making 999 simulations and calculating envelopes for all three summary statistics is quite time-consuming and takes up a lot memory.
 
-# Other point process models
+# Point process models
 
-The package also implements two other Cox processes: Interrupted Cox processes (ICP) and Permanental Cox point processes (PCPP), which both can be used with minor changes in the above example.
+In addition to the LGCP, the package also implements two other Cox processes, which both can be used with minor changes in the above example.
+
+## Currently implemented point process models
+
+The following three Cox point process models are implemented, and essentially differ by the transformation applied to the underlying Gaussian process to obtain the driving intensity of the Cox process.
+
+Name | Transform | Parameters | R name
+---- | ---- | --- | ----
+Log Gaussian Cox process | $\Lambda_0(u)=\exp(Y(u))$ | $(\sigma,\ldots)$ | "lgcp"
+Interrupted Cox Process  | $\Lambda_0(u)=\exp(-\sum_{i=1}^h Y_i(u)^2)(1+2c(u,u))^{h/2}$ | $(\sigma,h,\ldots)$ | "icp"
+Permanental Cox Point Process | $\Lambda_0(u)=\frac{1}{h}\sum_{i=1}^h Y_i(u)^2$ | $(h,\ldots)$ | "pcpp"
+
+The dots at the parameters refers to the fact that when using the implementations in the package, the remaining parameters are passed on to the chosen covariance function.
 
 ## ICP
 
@@ -173,55 +186,20 @@ Other covariance functions than the exponential can also be used.
 
 ## Currently implemented covariance functions
 
-The below covariance functions are currently implemented in the package. Note that all
-the covariance functions with type ending in bd are specified by their Bernstein distribution.
+The below covariance functions are currently implemented in the package. 
 
-- Exponential covariance function: 
-\[
-c(r) = \exp(-sr)
-\]
-with a scale parameter $s$. Use type="expcov" and par=c(s).
-- Powered exponential covariance function: 
-\[
-c(r) = \exp(-\beta r^\alpha)
-\]
-with parameters $(\alpha,\beta)$. Use type="powexpcov" and par=c(alpha,beta).
-- Matern covariance function: 
-\[
-c(r) = \frac{2^{1-\alpha}}{\Gamma(\alpha)}(\beta r)^\alpha K_\alpha(\beta r)
-\]
-with parameters $(\alpha,\beta)$. Use type="materncov" and par=c(alpha,beta).
-- Generalized Cauchy covariance function: 
-\[
-c(r) = (\beta r^\alpha+1)^{-\xi/\alpha}
-\]
-with parameters $(\alpha,\beta,\xi)$. Use type="gencaucov" and par=c(alpha,beta,xi).
-- Dagum covariance function: 
-\[
-c(r) = 1-\left(\frac{\beta r^\alpha}{1+\beta r^\alpha}\right)^{\xi/\alpha}
-\]
-with parameters $(\alpha,\beta,\xi)$. Use
-type="dagumcov" and par=c(alpha,beta,xi).
-- Covariance function with gamma Bernstein distribution:
-\[
-c(r) = (1+r/\phi)^{-\tau}
-\]
-with shape parameter $\tau$ and rate
-parameter $\phi$. Use type="gammabd" and par = c(tau,phi).
-- Covariance function with inverse gamma Bernstein distribution:
-\[
-c(r) = 2(r \phi)^{\tau/2}K_\tau\left( \frac{2\sqrt{r \phi}}{\Gamma(\tau)}\right)
-\]
-with shape parameter $\tau$ and scale
-parameter $\phi$. Use type="invgammabd" and par = c(tau,phi).
-- Covariance function with generalized inverse Gaussian Bernstein
-distribution: 
-\[
-c(r) = (1+2r/\psi)^{-\lambda/2}\frac{K_\lambda(\sqrt{(2r+\psi)\chi})}
-{K_\lambda(\sqrt{\psi \chi})}
-\]
-with parameters $(\chi,\psi,\lambda)$. Use type="gigbd" and
-par = c(chi,psi,lambda).
+Name | Expression | Parameters | R name    
+------------------ | --- | ------ | -----
+Exponential | $c(r) = \exp(-sr)$ | $s$ | "expcov"
+Powered exponential | $c(r) = \exp(-\beta r^\alpha)$ | $(\alpha,\beta)$ | "powexpcov"
+Matern | $c(r) = \frac{2^{1-\alpha}}{\Gamma(\alpha)}(\beta r)^\alpha K_\alpha(\beta r)$ | $(\alpha,\beta)$ | "materncov"
+Generalized Cauchy | $c(r) = (\beta r^\alpha+1)^{-\xi/\alpha}$ | $(\alpha,\beta,\xi)$ | "gencaucov"
+Dagum | $c(r) = 1-\left(\frac{\beta r^\alpha}{1+\beta r^\alpha}\right)^{\xi/\alpha}$ | $(\alpha,\beta,\xi)$ | "dagumcov"
+Gamma | $c(r) = (1+r/\phi)^{-\tau}$ | $(\tau,\phi)$ | "gammabd"
+Inverse gamma | $c(r) = 2(r \phi)^{\tau/2}K_\tau\left( \frac{2\sqrt{r \phi}}{\Gamma(\tau)}\right)$ | $(\tau,\phi)$ | "invgammabd"
+Generalized inverse Gaussian | $c(r) = (1+2r/\psi)^{-\lambda/2}\frac{K_\lambda(\sqrt{(2r+\psi)\chi})} {K_\lambda(\sqrt{\psi \chi})}$ | $(\chi,\psi,\lambda)$ | "gigbd"
+
+Note that the last three covariance functions have known Bernstein distribution and here they are named after this distribution. The Bernstein is useful for fast simulation on trees shaped networks as explained later.
 
 ## An example: Covariance function with gamma Bernstein distribution
 
@@ -274,3 +252,9 @@ plot(as.ppp(sim),pch=20, cols="red",add=TRUE)
 ```
 
 For the covariance functions without known Bernstein distribution, there is no faster algorithm, since this algorithm depends on simulating the Bernstein distribution.
+
+# Further reading
+
+The theory behind most of the methods in the package (i.e. Cox point process models, simulation algorithms, covariance functions, Bernstein distributions, etc.) can be found in @MolRas24. For more on covariance functions using the geodesic or resistance metric, see @AnderesEtAl. 
+
+# References

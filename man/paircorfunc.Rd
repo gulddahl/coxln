@@ -8,8 +8,8 @@ paircorfunc(covtype, transform)
 }
 \arguments{
 \item{covtype}{The type of covariance function used;
-currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
-see details under the function covfunctypes.}
+currently available: "expcov", "powexpcov", "materncov", "gencaucov", "dagumcov",
+"gammabd", "invgammabd" and "gigbd"; see details under the function covfunctypes.}
 
 \item{transform}{The type of point process used; "lgcp" for
 log Gaussian Cox process, "icp" for interrupted Cox process, and

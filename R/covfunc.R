@@ -136,8 +136,8 @@ covfunctypes = function(type,par=NULL){
 #' function.
 
 #' @param covtype The type of covariance function used;
-#' currently available: "expcov", "gammabd", "invgammabd" and "gigbd";
-#' see details under the function covfunctypes.
+#' currently available: "expcov", "powexpcov", "materncov", "gencaucov", "dagumcov",
+#' "gammabd", "invgammabd" and "gigbd"; see details under the function covfunctypes.
 #' @param transform The type of point process used; "lgcp" for
 #' log Gaussian Cox process, "icp" for interrupted Cox process, and
 #' "pcpp" for permanental Cox process.
